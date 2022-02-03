@@ -1,18 +1,17 @@
+import 'package:aimedic/core/constants/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:provider/provider.dart';
-import 'package:aimedic/app/dashBoard/service/dashboard_service.dart';
+
 import 'package:aimedic/app/dashBoard/viewModel/dashboard_view_model.dart';
-import 'package:aimedic/core/utils/colors.dart';
 
 class DashBoardView extends DashBoardViewModel {
   @override
   void initState() {
     super.initState();
-    homeViewModel.fetchUserDevicesList();
+    //homeViewModel.fetchUserDevicesList();
   }
 
-  DashBoardService get homeViewModel => context.read<DashBoardService>();
+  //DashBoardService get homeViewModel => context.read<DashBoardService>();
 
   @override
   Widget build(BuildContext context) {

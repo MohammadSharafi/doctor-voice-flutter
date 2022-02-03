@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:aimedic/app/home/model/user_devices_list_model.dart';
 import 'package:aimedic/app/home/model/user_devices_list_request.dart';
 import 'package:aimedic/core/cache_manager.dart';
-import 'package:provider/provider.dart';
+
 
 
 abstract class IHomeService {

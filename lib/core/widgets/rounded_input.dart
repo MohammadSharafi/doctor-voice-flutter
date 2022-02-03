@@ -1,7 +1,5 @@
+import 'package:aimedic/core/constants/app_colors.dart';
 import 'package:flutter/material.dart';
-import 'package:aimedic/core/utils/colors.dart';
-import 'package:aimedic/core/widgets/constants.dart';
-import 'package:aimedic/core/widgets/text_field_container.dart';
 
 class RoundedInputField extends StatelessWidget {
   final String? hintText;

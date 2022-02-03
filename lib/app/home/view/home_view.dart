@@ -1,12 +1,11 @@
+import 'package:aimedic/app/titlePages/titlePages.dart';
+import 'package:aimedic/core/constants/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:provider/provider.dart';
+
 import 'package:aimedic/app/dashBoard/dashboard.dart';
-import 'package:aimedic/app/home/service/home_service.dart';
 import 'package:aimedic/app/home/viewModel/home_view_model.dart';
-import 'package:aimedic/app/mainPage/mainPage.dart';
 import 'package:aimedic/app/profile/profile.dart';
-import 'package:aimedic/core/utils/colors.dart';
 import 'package:aimedic/core/widgets/home_page_widgets.dart/appBar.dart';
 import 'package:aimedic/core/widgets/home_page_widgets.dart/drawer.dart';
 
@@ -14,15 +13,15 @@ class HomeView extends HomeViewModel {
   @override
   void initState() {
     super.initState();
-    homeViewModel.fetchUserDevicesList();
+  //  homeViewModel.fetchUserDevicesList();
   }
 
-  HomeService get homeViewModel => context.read<HomeService>();
+  //HomeService get homeViewModel => context.read<HomeService>();
   int _selectedIndex = 0;
 
   static List<Widget> _pages = <Widget>[
     DashBoard(),
-    MainPage(),
+    TitlePages(),
     Profile(),
   ];
 
@@ -34,7 +33,7 @@ class HomeView extends HomeViewModel {
 
   @override
   Widget build(BuildContext context) {
-    final homeViewModel = Provider.of<HomeService>(context);
+   // final homeViewModel = Provider.of<HomeService>(context);
     return Scaffold(
       drawer: AppDrawer(
         onSignUpTap: (){},

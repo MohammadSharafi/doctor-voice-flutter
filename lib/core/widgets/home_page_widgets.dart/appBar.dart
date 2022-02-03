@@ -1,8 +1,7 @@
+import 'package:aimedic/core/constants/app_colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:aimedic/core/utils/colors.dart';
 
 class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
   String title;

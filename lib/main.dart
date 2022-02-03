@@ -1,34 +1,52 @@
-
+import 'package:aimedic/app/dashBoard/cubit/dashboard_cubit.dart';
+import 'package:aimedic/app/dashBoard/dashboard.dart';
+import 'package:aimedic/app/otp/cubit/otp_cubit.dart';
+import 'package:aimedic/app/otp/otp.dart';
+import 'package:aimedic/app/titlePages/cubit/titlePages_cubit.dart';
+import 'package:aimedic/app/titlePages/titlePages.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:aimedic/app/dashBoard/service/dashboard_service.dart';
-import 'package:aimedic/app/home/service/home_service.dart';
-import 'package:aimedic/app/mainPage/service/mainPage_service.dart';
-import 'package:aimedic/app/profile/service/profile_service.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:aimedic/app/splash/splash.dart';
-import 'package:aimedic/core/auth_manager.dart';
 import 'package:aimedic/core/network/network_service.dart';
+import 'app/home/home.dart';
+import 'app/login/cubit/login_cubit.dart';
+import 'app/login/login.dart';
+import 'app/profile/cubit/profile_cubit.dart';
+import 'app/record/cubit/files/files_cubit.dart';
+import 'app/record/cubit/record/record_cubit.dart';
+import 'app/record/record.dart';
+import 'app/splash/cubit/splash_cubit.dart';
+
 final Dio dio = NetworkService.instance.dio;
 
 void main() {
   runApp(
-    MultiProvider(
+    MultiBlocProvider(
       providers: [
-        Provider<AuthenticationManager>(
-          create: (context) => AuthenticationManager(context: context),
+        BlocProvider<RecordCubit>(
+          create: (context) => RecordCubit(),
         ),
-        ChangeNotifierProvider(
-          create: (_) => HomeService(dio),
+        BlocProvider<FilesCubit>(
+          create: (context) => FilesCubit(),
         ),
-        ChangeNotifierProvider(
-          create: (_) => MainPageService(dio),
+        BlocProvider<SplashCubit>(
+          create: (context) => SplashCubit(),
         ),
-        ChangeNotifierProvider(
-          create: (_) => DashBoardService(dio),
+        BlocProvider<ProfileCubit>(
+          create: (context) => ProfileCubit(),
         ),
-        ChangeNotifierProvider(
-          create: (_) => ProfileService(dio),
+        BlocProvider<TitlePagesCubit>(
+          create: (context) => TitlePagesCubit(),
+        ),
+        BlocProvider<LoginCubit>(
+          create: (context) => LoginCubit(),
+        ),
+        BlocProvider<OTPCubit>(
+          create: (context) => OTPCubit(),
+        ),
+        BlocProvider<DashboardCubit>(
+          create: (context) => DashboardCubit(),
         ),
       ],
       child: MyApp(),
@@ -45,7 +63,16 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: SplashView(),
+      initialRoute: SplashView.routeName,
+      routes: {
+        Record.routeName: (context) => Record(),
+        SplashView.routeName: (context) => SplashView(),
+        Home.routeName: (context) => Home(),
+        OTP.routeName: (context) => OTP(),
+        Login.routeName: (context) => Login(),
+        DashBoard.routeName: (context) => DashBoard(),
+        TitlePages.routeName: (context) => TitlePages(),
+      },
     );
   }
 }
