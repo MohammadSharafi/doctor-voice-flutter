@@ -253,7 +253,8 @@ class OTPView extends OTPViewModel {
     print('onEnd');
   }
   void navigateToHome() {
-    Navigator.of(context).push(MaterialPageRoute(builder: (context) => Home()));
+    Navigator.of(context).pushNamed(Home.routeName);
+
   }
   void navigateToLogin() {
     Navigator.of(context).pop();

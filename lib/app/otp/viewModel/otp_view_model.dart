@@ -65,6 +65,7 @@ abstract class OTPViewModel extends State<OTP>
   }
 
   void navigateToHome() {
-    Navigator.of(context).push(MaterialPageRoute(builder: (context) => Home()));
+    Navigator.of(context).pushNamed(Home.routeName);
+
   }
 }

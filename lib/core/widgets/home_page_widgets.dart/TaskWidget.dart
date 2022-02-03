@@ -6,7 +6,6 @@ class Task extends StatelessWidget {
   final Status status;
   final int index;
   final String text;
-
   const Task(
       {Key? key, required this.status, required this.index, required this.text})
       : super(key: key);

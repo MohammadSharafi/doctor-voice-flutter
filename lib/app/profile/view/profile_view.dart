@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:provider/provider.dart';
+
 import 'package:aimedic/app/profile/service/profile_service.dart';
 import 'package:aimedic/app/profile/viewModel/profile_view_model.dart';
 import 'package:aimedic/core/widgets/rounded_button.dart';
@@ -10,16 +10,16 @@ class ProfileView extends ProfileViewModel {
   @override
   void initState() {
     super.initState();
-    homeViewModel.fetchUserDevicesList();
+  //  homeViewModel.fetchUserDevicesList();
   }
   final TextEditingController controllerName = TextEditingController();
   final TextEditingController controllerCode = TextEditingController();
 
-  ProfileService get homeViewModel => context.read<ProfileService>();
+ // ProfileService get homeViewModel => context.read<ProfileService>();
 
   @override
   Widget build(BuildContext context) {
-    final homeViewModel = Provider.of<ProfileService>(context);
+   // final homeViewModel = Provider.of<ProfileService>(context);
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 16),
       child: Column(
