@@ -1,77 +1,44 @@
 import 'dart:io';
+
 import 'package:dio/dio.dart';
-import 'package:flutter/widgets.dart';
-import 'package:aimedic/app/home/model/user_devices_list_model.dart';
-import 'package:aimedic/app/home/model/user_devices_list_request.dart';
-import 'package:aimedic/core/cache_manager.dart';
+
+import '../../../core/cache_manager.dart';
+import '../model/user_dashboard_model.dart';
 
 
-abstract class IDashBoardService {
+
+abstract class IDashBoardService{
   IDashBoardService(this.dio);
 
-  Future<UserDevicesList?> getUserDevicesList(UserDevicesListRequest model);
+  Future<Dashboard?> getDashBoard();
   final Dio dio;
 }
 
-class DashBoardService extends IDashBoardService with ChangeNotifier, CacheManager{
+class DashBoardService extends IDashBoardService {
   DashBoardService(Dio dio) : super(dio);
 
-
   @override
-  Future<UserDevicesList?> getUserDevicesList(
-      UserDevicesListRequest? model) async {
+  Future<Dashboard?> getDashBoard() async {
+    final token=await CacheManager().getToken();
 
-    final response = await dio.post(
-      ServicePath.PATH.rawValue,
-      data: model,
-      options: Options(contentType: Headers.jsonContentType),
-    );
-
-    if (response.statusCode == HttpStatus.ok) {
-      return UserDevicesList.fromJson(response.data);
+    final response=await dio.get( DashBoardPath.DashBoard.rawValue, options: Options(responseType: ResponseType.json,headers:{'Authorization':'Bearer $token'}));
+    if (response.statusCode == HttpStatus.ok)  {
+      return Dashboard.fromJson(response.data);
     }
-    
-    return null;
+    else return null;
+
   }
-
-
-  UserDevicesList? userDevicesList;
-
-  List<CihazNo>? _models = [];
-
-  List<CihazNo>? get model1 => _models;
-
-
-
-  Future<void> fetchUserDevicesList() async {
-    final token = await getToken();
-
-    final response = await getUserDevicesList(
-      UserDevicesListRequest(
-        app_token: token,
-        userid: 1,
-        cihaz_no: [100000291],
-      ),
-    );
-
-    if (response?.token != null) {
-      userDevicesList = response;
-      _models = userDevicesList?.cihaz_no;
-    }
-    
-    notifyListeners();
-  }
-  
-
 }
 
-enum ServicePath { PATH }
 
-extension ServicePathExtension on ServicePath {
+
+enum DashBoardPath { DashBoard }
+
+extension ServicePathExtension on DashBoardPath {
   String get rawValue {
     switch (this) {
-      case ServicePath.PATH:
-        return '/api/userdeviceslist';
+      case DashBoardPath.DashBoard:
+        return '/api/v1/metrics/';
     }
   }
 }

@@ -8,13 +8,11 @@ part of 'user_request_model.dart';
 
 UserRequestModel _$UserRequestModelFromJson(Map<String, dynamic> json) {
   return UserRequestModel(
-    email: json['email'] as String?,
-    password: json['password'] as String?,
+    phone_number: json['phone_number'] as String?,
   );
 }
 
 Map<String, dynamic> _$UserRequestModelToJson(UserRequestModel instance) =>
     <String, dynamic>{
-      'email': instance.email,
-      'password': instance.password,
+      'phone_number': instance.phone_number,
     };

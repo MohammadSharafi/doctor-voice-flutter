@@ -1,5 +1,7 @@
 import 'package:dio/dio.dart';
 
+import '../cache_manager.dart';
+
 class NetworkService {
 
   static NetworkService? _instace;
@@ -9,10 +11,11 @@ class NetworkService {
     return _instace!;
   }
 
-  final String _baseUrl1 = 'http://ems.lande.com.tr/';
+  final String _baseUrl1 = 'https://apidv.aimedic.tech/';
   late final Dio dio;
 
-  NetworkService._init() {
+  NetworkService._init()  {
     dio = Dio(BaseOptions(baseUrl: _baseUrl1));
+
   }
 }

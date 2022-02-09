@@ -17,14 +17,13 @@ class LoginService extends ILoginService {
   LoginService(Dio dio) : super(dio);
 
   @override
-  Future<UserResponseModel?> getLogin(UserRequestModel model) async {
-    final response = await dio.post( LoginPath.LOGIN.rawValue, data: model, options: Options(contentType: Headers.jsonContentType));
+  Future<UserResponseModel?> getLogin(UserRequestModel model)  async {
+    final response=await dio.post( LoginPath.LOGIN.rawValue, data: model, options: Options(contentType: Headers.jsonContentType));
+     if (response.statusCode == HttpStatus.ok)  {
+       return UserResponseModel().fromJson(response.data);
+     }
+     else return null;
 
-    if (response.statusCode == HttpStatus.ok) {
-      return UserResponseModel().fromJson(response.data);
-    }
-
-    return null;
   }
 }
 
@@ -36,7 +35,7 @@ extension ServicePathExtension on LoginPath {
   String get rawValue {
     switch (this) {
       case LoginPath.LOGIN:
-        return '/api/userlogin';
+        return '/api/v1/auth/otp-token';
     }
   }
 }

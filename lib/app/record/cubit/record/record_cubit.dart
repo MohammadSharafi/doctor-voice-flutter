@@ -46,10 +46,11 @@ class RecordCubit extends Cubit<RecordState> {
     }
   }
 
-  void stopRecording() async {
+  Future<String>  stopRecording() async {
     String? path = await _audioRecorder.stop();
     emit(RecordStopped());
     print('Output path $path');
+    return '$path';
   }
 
   Future<Amplitude> getAmplitude() async {

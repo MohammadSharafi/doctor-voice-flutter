@@ -16,7 +16,7 @@ abstract class AppColors {
   static Color primaryLightBlue = Color.fromRGBO(0, 94, 243, 1.0);
   static Color darkBG = Color.fromRGBO(21, 40, 56, 1.0);
   static Color primaryBlack = Color.fromRGBO(6, 6, 6, 1.0);
-  static Color primaryGray = Color.fromRGBO(112, 112, 112, 1.0);
+  static Color primaryGray = Color.fromRGBO(106, 128, 154, 1.0);
   static Color primaryRed= Color.fromRGBO(255, 96, 86, 1.0);
 
   //status Colors

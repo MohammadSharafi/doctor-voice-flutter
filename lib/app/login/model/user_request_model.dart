@@ -5,10 +5,9 @@ part 'user_request_model.g.dart';
 
 @JsonSerializable()
 class UserRequestModel extends BaseModel<UserRequestModel> {
-  String? email;
-  String? password;
+  String? phone_number;
 
-  UserRequestModel({this.email, this.password});
+  UserRequestModel({this.phone_number,});
 
   @override
   fromJson(Map<String, dynamic> json) {
