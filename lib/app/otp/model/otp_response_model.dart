@@ -6,10 +6,11 @@ part 'otp_response_model.g.dart';
 @JsonSerializable()
 class OTPResponseModel extends BaseModel<OTPResponseModel> {
   String? access_token;
+  String? refresh_token;
   String? token_type;
 
 
-  OTPResponseModel({this.access_token,this.token_type});
+  OTPResponseModel({this.access_token,this.token_type,this.refresh_token});
 
   @override
   OTPResponseModel fromJson(Map<String, dynamic> json) {

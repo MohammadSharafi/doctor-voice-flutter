@@ -37,7 +37,7 @@ class RecordListView extends RecordListViewModel {
                       key: ValueKey(index),
                       text:voices[index].text?.text ,
                       //TODO: change
-                      title:voices[index].text?.text ,
+                      title:'Text ${index}'.padLeft(3,'0') ,
                       status: voices[index].status,
                     ),
                   ],

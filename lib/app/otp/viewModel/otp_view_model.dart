@@ -28,6 +28,7 @@ abstract class OTPViewModel extends State<OTP>
   Future<void> fetchUserOTP(OTPResponseModel response) async {
     if (response.access_token != null) {
       saveToken(response.access_token ?? '');
+      saveRefreshToken(response.refresh_token ?? '');
       WidgetsBinding.instance?.addPostFrameCallback((_) {
         Navigator.of(context).pushNamed(Home.routeName);
 

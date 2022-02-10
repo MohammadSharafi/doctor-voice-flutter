@@ -24,7 +24,7 @@ class OTPView extends OTPViewModel {
   int endTime = DateTime.now().millisecondsSinceEpoch + 1000 * 180;
   final GlobalKey<FormState> _formKey = GlobalKey();
   TextEditingController textEditingController = TextEditingController();
-
+   bool timeFinish=false;
   // ignore: close_sinks
   late StreamController<ErrorAnimationType> errorController;
 
@@ -198,7 +198,7 @@ class OTPView extends OTPViewModel {
                       ),
 
                       ///TODO:here
-                      false
+                      timeFinish
                           ? Text(
                               "Retrieve the verification code",
                               style: GoogleFonts.yantramanav(
@@ -209,47 +209,63 @@ class OTPView extends OTPViewModel {
                                 ),
                               ),
                             )
-                          : Text.rich(
-                              TextSpan(children: <InlineSpan>[
-                                TextSpan(
-                                  text: 'Resend code up ',
-                                  style: TextStyle(
-                                      color: Colors.white60,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w400),
-                                ),
-                                WidgetSpan(
-                                  child: CountdownTimer(
-                                    endTime: endTime,
-                                    widgetBuilder:
-                                        (_, CurrentRemainingTime time) {
-                                      if (time != null) {
-                                        return Text(
-                                          '${time.min ?? 0}'.padLeft(2, '0') +
-                                              ':' +
-                                              '${time.sec ?? 0}'
-                                                  .padLeft(2, '0'),
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w400,
-                                          ),
-                                        );
-                                      } else {
-                                        return Text('');
-                                      }
-                                    },
+                          : GestureDetector(
+                        onTap: (){
+                          navigateToLogin();
+
+                        },
+                            child: Text.rich(
+                                TextSpan(children: <InlineSpan>[
+                                  TextSpan(
+                                    text: 'Resend code up ',
+                                    style: TextStyle(
+                                        color: Colors.white60,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w400),
                                   ),
-                                ),
-                                TextSpan(
-                                  text: ' Other',
-                                  style: TextStyle(
-                                      color: Colors.white60,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w400),
-                                ),
-                              ]),
-                            ),
+                                  WidgetSpan(
+                                    child: CountdownTimer(
+                                      endTime: endTime,
+                                      widgetBuilder:
+                                          (_, CurrentRemainingTime time) {
+                                        if(time.min==0 && time.sec==0){
+                                          setState(() {
+                                            timeFinish=true;
+                                          });
+                                        }
+                                        else{
+                                          setState(() {
+                                            timeFinish=false;
+                                          });
+                                        }
+                                        if (time != null) {
+                                          return Text(
+                                            '${time.min ?? 0}'.padLeft(2, '0') +
+                                                ':' +
+                                                '${time.sec ?? 0}'
+                                                    .padLeft(2, '0'),
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w400,
+                                            ),
+                                          );
+                                        } else {
+                                          return Text('');
+                                        }
+                                      },
+                                    ),
+                                  ),
+                                  TextSpan(
+                                    text: ' Other',
+                                    style: TextStyle(
+                                        color: Colors.white60,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w400),
+                                  ),
+                                ]),
+                              ),
+                          ),
 
                       SizedBox(
                         height: 20,

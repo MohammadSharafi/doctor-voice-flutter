@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:aimedic/app/recordList/model/voice_list_model.dart';
-import 'package:aimedic/app/titlePages/model/text_list_model.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/widgets.dart';
 import 'package:aimedic/core/cache_manager.dart';

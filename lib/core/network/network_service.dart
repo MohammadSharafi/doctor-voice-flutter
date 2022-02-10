@@ -1,6 +1,8 @@
+import 'package:aimedic/core/network/retry_interceptor.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 
-import '../cache_manager.dart';
+import 'dio_connectivity_request_retrier.dart';
 
 class NetworkService {
 
@@ -17,5 +19,13 @@ class NetworkService {
   NetworkService._init()  {
     dio = Dio(BaseOptions(baseUrl: _baseUrl1));
 
+    dio.interceptors.add(
+      RetryOnConnectionChangeInterceptor(
+        requestRetrier: DioConnectivityRequestRetrier(
+          dio: Dio(),
+          connectivity: Connectivity(),
+        ),
+      ),
+    );
   }
 }
