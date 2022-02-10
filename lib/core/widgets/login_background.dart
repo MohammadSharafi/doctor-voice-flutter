@@ -1,5 +1,5 @@
+import 'package:aimedic/core/constants/app_colors.dart';
 import 'package:flutter/material.dart';
-import 'package:aimedic/core/utils/colors.dart';
 
 class Background extends StatelessWidget {
   final Widget child;

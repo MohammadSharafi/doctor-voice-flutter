@@ -30,17 +30,20 @@ class RoundedButton extends StatelessWidget {
   //Here we have to apply customizations to Button by inheriting the styleFrom
 
   Widget newElevatedButton() {
-    return ElevatedButton(
-      child: Text(
-        text!,
-        style: TextStyle(color: textColor),
+    return Container(
+      height: 60,
+      child: ElevatedButton(
+        child: Text(
+          text!,
+          style: TextStyle(color: textColor),
+        ),
+        onPressed: press,
+        style: ElevatedButton.styleFrom(
+            primary: color,
+            padding: EdgeInsets.symmetric(horizontal: 40, vertical: 20),
+            textStyle: TextStyle(
+                color: textColor, fontSize: 14, fontWeight: FontWeight.w300)),
       ),
-      onPressed: press,
-      style: ElevatedButton.styleFrom(
-          primary: color,
-          padding: EdgeInsets.symmetric(horizontal: 40, vertical: 20),
-          textStyle: TextStyle(
-              color: textColor, fontSize: 14, fontWeight: FontWeight.w300)),
     );
   }
 }

@@ -1,19 +1,21 @@
+import 'package:aimedic/core/constants/app_colors.dart';
 import 'package:flutter/material.dart';
-import 'package:aimedic/core/utils/colors.dart';
-import 'package:aimedic/core/widgets/constants.dart';
-import 'package:aimedic/core/widgets/text_field_container.dart';
 
 class RoundedInputField extends StatelessWidget {
   final String? hintText;
   final IconData? icon;
   final ValueChanged<String> onChanged;
   final TextEditingController controller;
-    final String? Function(String? data)? validator;
-  const RoundedInputField({
+  final TextInputType keyboardType;
+  final String? Function(String? data)? validator;
+   RoundedInputField({
     Key? key,
     this.hintText,
     this.icon = Icons.person,
-    required this.onChanged, required this.controller, this.validator,
+    required this.onChanged,
+     required this.controller,
+     this.validator,
+     required this.keyboardType,
   }) : super(key: key);
 
   @override

@@ -1,13 +1,17 @@
+import 'dart:async';
+
+import 'package:aimedic/app/login/cubit/login_cubit.dart';
+import 'package:aimedic/app/login/viewModel/login_view_model.dart';
+import 'package:aimedic/core/widgets/rounded_button_loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:aimedic/app/home/home.dart';
-import 'package:aimedic/app/login/viewModel/login_view_model.dart';
 import 'package:aimedic/core/widgets/login_background.dart';
 import 'package:aimedic/core/widgets/rounded_button.dart';
 import 'package:aimedic/core/widgets/rounded_input.dart';
 
-import '../login.dart';
+enum LoginBtnState { Loeded, Loading, InitState, Error }
 
 class LoginView extends LoginViewModel {
   final EdgeInsets paddingLow = EdgeInsets.all(8.0);
@@ -95,6 +99,7 @@ class LoginView extends LoginViewModel {
                     height: 12,
                   ),
                   RoundedInputField(
+                    keyboardType: TextInputType.phone,
                     onChanged: (String value) {
                       if (value.length == 11 &&
                           value.substring(0, 2).contains('09')) {}
@@ -104,13 +109,50 @@ class LoginView extends LoginViewModel {
                   SizedBox(
                     height: 30,
                   ),
-                  RoundedButton(
-                    text: "Login",
-                    press: () {
-                      if (_formKey.currentState?.validate() ?? false) {
+                  BlocBuilder<LoginCubit, LoginState>(
+                    builder: (context, state) {
+                      if (state is LoadedState) {
                         fetchUserLogin(
-                            controllerPhone.text,' controllerPassword.text');
+                          state.response,
+                        );
                       }
+                      if (state is LoadingState) {
+                        return RoundedButtonLoading();
+                      } else if (state is ErrorState) {
+                        scheduleMicrotask(() {
+                          SnackBar(
+                            backgroundColor: Colors.red,
+                            content: Text(
+                              "Please Try again",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 17.0,
+                                  fontWeight: FontWeight.w300),
+                            ),
+                          );
+                        }
+                        );
+
+
+                        return RoundedButton(
+                          text: "Login",
+                          press: () {
+                            if (_formKey.currentState?.validate() ?? false) {
+                              BlocProvider.of<LoginCubit>(context)
+                                  .login(controllerPhone.text);
+                            }
+                          },
+                        );
+                      } else
+                        return RoundedButton(
+                          text: "Login",
+                          press: () {
+                            if (_formKey.currentState?.validate() ?? false) {
+                              BlocProvider.of<LoginCubit>(context)
+                                  .login(controllerPhone.text);
+                            }
+                          },
+                        );
                     },
                   ),
                   SizedBox(height: size.height * 0.03),
@@ -122,5 +164,4 @@ class LoginView extends LoginViewModel {
       ),
     );
   }
-
 }

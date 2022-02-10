@@ -1,4 +1,8 @@
+import 'package:aimedic/core/network/retry_interceptor.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
+
+import 'dio_connectivity_request_retrier.dart';
 
 class NetworkService {
 
@@ -9,10 +13,19 @@ class NetworkService {
     return _instace!;
   }
 
-  final String _baseUrl1 = 'http://ems.lande.com.tr/';
+  final String _baseUrl1 = 'https://apidv.aimedic.tech/';
   late final Dio dio;
 
-  NetworkService._init() {
+  NetworkService._init()  {
     dio = Dio(BaseOptions(baseUrl: _baseUrl1));
+
+    dio.interceptors.add(
+      RetryOnConnectionChangeInterceptor(
+        requestRetrier: DioConnectivityRequestRetrier(
+          dio: Dio(),
+          connectivity: Connectivity(),
+        ),
+      ),
+    );
   }
 }
