@@ -14,6 +14,7 @@ class OTPCubit extends Cubit<OTPState> {
   OTPCubit({required this.repository,}) : super(InitialState());
   void OTP(String ? code,String ? otp_token) {
 
+    try{
     emit(LoadingState());
     Timer(Duration(seconds: 1), ()  {
        repository.getOTP(OTPRequestModel(otp_token:otp_token ,code:code )).then((response) {
@@ -21,13 +22,19 @@ class OTPCubit extends Cubit<OTPState> {
 
       });
     });
+    emit(ErrorState());
+
+    }
+    catch(e){
+      emit(ErrorState());
+
+    }
+
 
   }
   void refresh( ) {
 
-
     emit(InitialState());
-
 
   }
 }

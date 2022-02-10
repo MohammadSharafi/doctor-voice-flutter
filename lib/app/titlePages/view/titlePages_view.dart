@@ -1,3 +1,4 @@
+import 'package:aimedic/app/globalCubit/global_cubit.dart';
 import 'package:aimedic/app/recordPage/recordpage.dart';
 import 'package:aimedic/app/titlePages/cubit/texts_cubit.dart';
 import 'package:aimedic/app/titlePages/model/ScreenArguments.dart';
@@ -9,6 +10,7 @@ import 'package:percent_indicator/percent_indicator.dart';
 class TitlePagesView extends TitlePagesViewModel {
   @override
   void initState() {
+    BlocProvider.of<GlobalCubit>(context).getTitle('Text List');
     super.initState();
   }
 

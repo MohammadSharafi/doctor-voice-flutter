@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:aimedic/app/login/model/user_request_model.dart';
 import 'package:aimedic/app/login/service/login_services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

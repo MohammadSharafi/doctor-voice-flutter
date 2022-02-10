@@ -6,11 +6,14 @@ import 'package:flutter/widgets.dart';
 import 'package:aimedic/app/dashBoard/viewModel/dashboard_view_model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../globalCubit/global_cubit.dart';
+
 class DashBoardView extends DashBoardViewModel {
   @override
   void initState() {
     super.initState();
-    //homeViewModel.fetchUserDevicesList();
+    BlocProvider.of<GlobalCubit>(context).getTitle('Dashboard');
+
   }
 
   @override

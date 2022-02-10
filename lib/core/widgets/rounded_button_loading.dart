@@ -3,6 +3,7 @@ import 'package:aimedic/core/widgets/constants.dart';
 
 class RoundedButtonLoading extends StatelessWidget {
   final Color? color, textColor;
+
   const RoundedButtonLoading({
     Key? key,
     this.color = kPrimaryColor,
@@ -27,13 +28,11 @@ class RoundedButtonLoading extends StatelessWidget {
 
   Widget newElevatedButton() {
     return Container(
-      height:60 ,
+      height: 60,
       child: ElevatedButton(
         child: Container(
-            height:40 ,
-            width:40 ,
-            child: CircularProgressIndicator()),
-        onPressed: (){},
+            height: 30, width: 30, child: CircularProgressIndicator()),
+        onPressed: () {},
         style: ElevatedButton.styleFrom(
             primary: color,
             padding: EdgeInsets.symmetric(horizontal: 40, vertical: 20),

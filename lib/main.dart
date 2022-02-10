@@ -1,6 +1,10 @@
+import 'package:aimedic/app/JustView/AboutUs.dart';
+import 'package:aimedic/app/JustView/ContactUs.dart';
 import 'package:aimedic/app/dashBoard/cubit/dashboard_cubit.dart';
 import 'package:aimedic/app/dashBoard/dashboard.dart';
+import 'package:aimedic/app/globalCubit/global_cubit.dart';
 import 'package:aimedic/app/otp/cubit/otp_cubit.dart';
+import 'package:aimedic/app/profile/cubit/avatar_cubit.dart';
 import 'package:aimedic/app/profile/service/profile_service.dart';
 import 'package:aimedic/app/titlePages/titlePages.dart';
 import 'package:dio/dio.dart';
@@ -50,6 +54,11 @@ void main() {
             repository: ProfileService(dio),
           ),
         ),
+        BlocProvider<AvatarCubit>(
+          create: (context) => AvatarCubit(
+            repository: ProfileService(dio),
+          ),
+        ),
         BlocProvider<VoiceListCubit>(
           create: (context) => VoiceListCubit(
             repository: VoiceListService(dio),
@@ -73,6 +82,10 @@ void main() {
           create: (context) =>
               DashBoardCubit(repository: DashBoardService(dio)),
         ),
+        BlocProvider<GlobalCubit>(
+          create: (context) =>
+              GlobalCubit(title: ''),
+        ),
       ],
       child: MyApp(),
     ),
@@ -84,7 +97,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Uzel Bilisim',
+      title: 'Doctor Voice',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
@@ -97,6 +110,8 @@ class MyApp extends StatelessWidget {
         Login.routeName: (context) => Login(),
         DashBoard.routeName: (context) => DashBoard(),
         TitlePages.routeName: (context) => TitlePages(),
+        ContactUs.routeName: (context) => ContactUs(),
+        AboutUs.routeName: (context) => AboutUs(),
       },
     );
   }
