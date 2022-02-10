@@ -40,6 +40,7 @@ class VoiceListService extends IVoiceListService with ChangeNotifier, CacheManag
                   status:json['status'],
                   textId:json['textId'],
                   url:json['url'],
+                  created_at:json['created_at'],
                 ),
           ),
         );
