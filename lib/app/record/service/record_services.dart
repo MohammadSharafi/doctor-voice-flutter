@@ -1,15 +1,17 @@
 import 'dart:io';
+import 'package:aimedic/app/record/models/fileUploadModel.dart';
+import 'package:aimedic/app/record/models/fileUploadModelResponse.dart';
+import 'package:aimedic/app/record/models/filecreateModel.dart';
+import 'package:aimedic/app/record/models/filecreateModelResponse.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/widgets.dart';
-import 'package:aimedic/app/home/model/user_devices_list_model.dart';
-import 'package:aimedic/app/home/model/user_devices_list_request.dart';
 import 'package:aimedic/core/cache_manager.dart';
 
 
 abstract class IRecordService {
   IRecordService(this.dio);
 
-  Future<UserDevicesList?> getUserDevicesList(UserDevicesListRequest model);
+ // Future<UserDevicesList?> getUserDevicesList(UserDevicesListRequest model);
   final Dio dio;
 }
 
@@ -18,60 +20,55 @@ class RecordService extends IRecordService with ChangeNotifier, CacheManager{
 
 
   @override
-  Future<UserDevicesList?> getUserDevicesList(
-      UserDevicesListRequest? model) async {
+  Future<FileUploadModelRes?> sendFile(File file) async {
 
-    final response = await dio.post(
-      ServicePath.PATH.rawValue,
-      data: model,
-      options: Options(contentType: Headers.jsonContentType),
-    );
+    final token=await CacheManager().getToken();
+    var formData = FormData.fromMap({
+      'file':await MultipartFile.fromFile(file.path, filename: file.path.split('/').last),
 
+    });
+    final response=await dio.post(ServicePath.PATH.rawValue,
+        data: formData,
+        options: Options(headers: {
+          'Authorization':'Bearer $token',/*'Content-Type' : 'multipart/form-data'*/
+        } // set content-length
+        ));
     if (response.statusCode == HttpStatus.ok) {
-      return UserDevicesList.fromJson(response.data);
+      final serv = FileUploadModelRes.fromJson(response.data);
+      return serv;
+
+    }
+    else{
+      return null;
     }
 
-    return null;
   }
 
-
-  UserDevicesList? userDevicesList;
-
-  List<CihazNo>? _models = [];
-
-  List<CihazNo>? get model1 => _models;
-
-
-
-  Future<void> fetchUserDevicesList() async {
-    final token = await getToken();
-
-    final response = await getUserDevicesList(
-      UserDevicesListRequest(
-        app_token: token,
-        userid: 1,
-        cihaz_no: [100000291],
-      ),
-    );
-
-    if (response?.token != null) {
-      userDevicesList = response;
-      _models = userDevicesList?.cihaz_no;
+  Future<createVoiceModelResponse?> creatFile(createVoiceModel model)  async {
+    final token=await CacheManager().getToken();
+    final response=await dio.post(ServicePath.CREAT.rawValue, data: model,
+        options: Options(
+            headers: {'Authorization':'Bearer $token',}
+            ,contentType: Headers.jsonContentType));
+    if (response.statusCode == HttpStatus.ok)  {
+      return createVoiceModelResponse.fromJson(response.data);
     }
+    else return null;
 
-    notifyListeners();
   }
 
 
 }
 
-enum ServicePath { PATH }
+enum ServicePath { PATH ,CREAT}
 
 extension ServicePathExtension on ServicePath {
   String get rawValue {
     switch (this) {
       case ServicePath.PATH:
-        return '/api/userdeviceslist';
+        return '/api/v1/file/upload/voice';
+      case ServicePath.CREAT:
+        return '/api/v1/voice';
     }
   }
 }

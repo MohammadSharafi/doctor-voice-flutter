@@ -1,12 +1,22 @@
-import 'dart:async';
-import 'dart:io';
-import 'package:aimedic/core/constants/paths.dart';
+import 'package:aimedic/app/profile/model/profile_model.dart';
+import 'package:aimedic/app/profile/service/profile_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:record/record.dart';
 part 'profile_state.dart';
 
 class ProfileCubit extends Cubit<ProfileState> {
-  ProfileCubit() : super(ProfileInitial());
+  ProfileCubit({required this.repository}) : super(InitialState()) {
+    getTrendingMovies();
+  }
 
+  final ProfileService repository;
+
+  void getTrendingMovies() async {
+    try {
+      emit(LoadingState());
+      final profile = await repository.getProfile();
+      emit(LoadedState(profile!));
+    } catch (e) {
+      emit(ErrorState());
+    }
+  }
 }

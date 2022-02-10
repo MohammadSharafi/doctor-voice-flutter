@@ -5,10 +5,7 @@ import 'package:flutter/cupertino.dart';
 
 import '../titlePages.dart';
 
-abstract class TitlePagesViewModel extends State<TitlePages>
-    with CacheManager, ChangeNotifier {
-      
-
+abstract class TitlePagesViewModel extends State<TitlePages> {
 
   @override
   void initState() {

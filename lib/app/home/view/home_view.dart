@@ -13,11 +13,9 @@ class HomeView extends HomeViewModel {
   @override
   void initState() {
     super.initState();
-  //  homeViewModel.fetchUserDevicesList();
   }
 
-  //HomeService get homeViewModel => context.read<HomeService>();
-  int _selectedIndex = 0;
+  int _selectedIndex = 1;
 
   static List<Widget> _pages = <Widget>[
     DashBoard(),
@@ -87,17 +85,3 @@ class HomeView extends HomeViewModel {
   }
 }
 
-//  ListView.builder(
-//               itemCount: homeViewModel.model1!.length,
-//               itemBuilder: (context, index) {
-//                 return ListTile(
-//                   onTap: () {
-//                     Navigator.of(context).push(MaterialPageRoute(
-//                         builder: (context) => Detail(homeViewModel.model1?[index].cihaz_no)));
-//                   },
-//                   title: Text(
-//                     homeViewModel.model1?[index].ad_soyad ?? "null",
-//                     style: TextStyle(color: Colors.white),
-//                   ),
-//                 );
-//               }),

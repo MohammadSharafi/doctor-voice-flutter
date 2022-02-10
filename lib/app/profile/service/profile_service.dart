@@ -1,15 +1,13 @@
 import 'dart:io';
+import 'package:aimedic/app/profile/model/profile_model.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/widgets.dart';
-import 'package:aimedic/app/home/model/user_devices_list_model.dart';
-import 'package:aimedic/app/home/model/user_devices_list_request.dart';
 import 'package:aimedic/core/cache_manager.dart';
 
 
 abstract class IProfileService {
   IProfileService(this.dio);
 
-  Future<UserDevicesList?> getUserDevicesList(UserDevicesListRequest model);
   final Dio dio;
 }
 
@@ -17,51 +15,29 @@ class ProfileService extends IProfileService with ChangeNotifier, CacheManager{
   ProfileService(Dio dio) : super(dio);
 
 
-  @override
-  Future<UserDevicesList?> getUserDevicesList(
-      UserDevicesListRequest? model) async {
 
-    final response = await dio.post(
-      ServicePath.PATH.rawValue,
-      data: model,
-      options: Options(contentType: Headers.jsonContentType),
-    );
+  Future<ProfileModel?> getProfile() async {
+    try {
+      final token=await getToken();
 
-    if (response.statusCode == HttpStatus.ok) {
-      return UserDevicesList.fromJson(response.data);
+      final response = await dio.get(
+        ServicePath.PATH.rawValue,
+        options: Options(headers:{'Authorization':'Bearer $token'} ),
+      );
+
+      if (response.statusCode == HttpStatus.ok) {
+        final profile = ProfileModel.fromJson(response.data);
+
+        return profile;
+      }
+
+      return null;
     }
-    
-    return null;
-  }
-
-
-  UserDevicesList? userDevicesList;
-
-  List<CihazNo>? _models = [];
-
-  List<CihazNo>? get model1 => _models;
-
-
-
-  Future<void> fetchUserDevicesList() async {
-    final token = await getToken();
-
-    final response = await getUserDevicesList(
-      UserDevicesListRequest(
-        app_token: token,
-        userid: 1,
-        cihaz_no: [100000291],
-      ),
-    );
-
-    if (response?.token != null) {
-      userDevicesList = response;
-      _models = userDevicesList?.cihaz_no;
+    catch (e) {
+      print(e);
+      throw e;
     }
-    
-    notifyListeners();
   }
-  
 
 }
 
@@ -71,7 +47,7 @@ extension ServicePathExtension on ServicePath {
   String get rawValue {
     switch (this) {
       case ServicePath.PATH:
-        return '/api/userdeviceslist';
+        return '/api/v1/users/me';
     }
   }
 }

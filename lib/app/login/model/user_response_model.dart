@@ -5,10 +5,10 @@ part 'user_response_model.g.dart';
 
 @JsonSerializable()
 class UserResponseModel extends BaseModel<UserResponseModel> {
-  String? app_token;
-  int? userid;
+  String? otp_token;
 
-  UserResponseModel({this.app_token, this.userid});
+
+  UserResponseModel({this.otp_token,});
 
   @override
   UserResponseModel fromJson(Map<String, dynamic> json) {

@@ -5,9 +5,9 @@ enum Status { Done, NotDone }
 class Task extends StatelessWidget {
   final Status status;
   final int index;
-  final String text;
+  final String ? text;
   const Task(
-      {Key? key, required this.status, required this.index, required this.text})
+      {Key? key, required this.status, required this.index,this.text})
       : super(key: key);
 
   @override
@@ -58,7 +58,7 @@ class Task extends StatelessWidget {
               child: Container(
                 margin: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
                 child: Text(
-                  text,
+                  text!,
                   textAlign: TextAlign.left,
                   softWrap: true,
                   style: TextStyle(

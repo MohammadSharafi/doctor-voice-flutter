@@ -1,13 +1,15 @@
+import 'package:aimedic/app/login/login.dart';
 import 'package:aimedic/app/splash/cubit/splash_cubit.dart';
 import 'package:aimedic/core/constants/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:aimedic/app/home/home.dart';
 import 'package:aimedic/core/auth_manager.dart';
+import 'package:aimedic/core/cache_manager.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
+import 'package:flutter/material.dart';
 
 class SplashView extends StatefulWidget {
-  static const routeName = '/splashscreen';
+  static const routeName = '/';
 
   @override
   _SplashViewState createState() => _SplashViewState();
@@ -20,10 +22,7 @@ class _SplashViewState extends State<SplashView> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration(seconds: 2)).then((value){
-      Navigator.of(context).pushNamed(Home.routeName);
-
-    });
+init();
 
   }
 
@@ -84,5 +83,16 @@ class _SplashViewState extends State<SplashView> {
         },
       ),
     );
+  }
+
+  void init() {
+    Future.delayed(Duration(seconds: 2)).then((value) async {
+      final token = await CacheManager().getToken();
+      if(token=='' || token==null)
+        Navigator.of(context).pushNamed(Login.routeName);
+      else
+        Navigator.of(context).pushNamed(Home.routeName);
+
+    });
   }
 }
