@@ -36,7 +36,7 @@ class RecordListView extends RecordListViewModel {
                       url: voices[index].url,
                       key: ValueKey(index),
                       text:voices[index].text?.text ,
-                      //TODO: change
+                      date: voices[index].created_at,
                       title:'Text ${index}'.padLeft(3,'0') ,
                       status: voices[index].status,
                     ),
