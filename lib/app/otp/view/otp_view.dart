@@ -229,14 +229,10 @@ class OTPView extends OTPViewModel {
                                       widgetBuilder:
                                           (_, CurrentRemainingTime time) {
                                         if(time.min==0 && time.sec==0){
-                                          setState(() {
                                             timeFinish=true;
-                                          });
                                         }
                                         else{
-                                          setState(() {
                                             timeFinish=false;
-                                          });
                                         }
                                         if (time != null) {
                                           return Text(

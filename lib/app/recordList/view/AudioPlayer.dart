@@ -190,7 +190,7 @@ class _AudioPlayerUrlState extends State<AudioPlayerUrl> {
                         Container(
                           width: 120,
                           child: Text(
-                            widget.date ?? '',
+                            widget.date!.substring(0,10) ?? '',
                             textAlign: TextAlign.left,
                             style: TextStyle(
                               color: Colors.white,
@@ -271,7 +271,7 @@ class _AudioPlayerUrlState extends State<AudioPlayerUrl> {
                         height: 20,
                       ),
                       Text(
-                        widget.title ?? '',
+                        widget.text ?? '',
                         textAlign: TextAlign.left,
                         style: TextStyle(
                           color: Colors.white,
