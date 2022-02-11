@@ -15,12 +15,13 @@ class GlobalLoadingState extends GlobalState {
 }
 
 class GlobalLoadedState extends GlobalState {
-  GlobalLoadedState(this.title);
+  GlobalLoadedState(this.title,this.index);
 
   final title;
+  int index;
 
   @override
-  List<Object> get props => [title];
+  List<Object> get props => [title,index];
 }
 
 class GlobalErrorState extends GlobalState {

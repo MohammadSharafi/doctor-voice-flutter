@@ -20,6 +20,14 @@ class Background extends StatelessWidget {
       child: Stack(
         alignment: Alignment.center,
         children: <Widget>[
+          Column(
+            children: [
+              Spacer(),
+              Container(
+                child: Image.asset('assets/images/background.png'),
+              ),
+            ],
+          ),
           child,
         ],
       ),

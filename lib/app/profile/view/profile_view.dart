@@ -11,17 +11,18 @@ import 'package:aimedic/app/profile/viewModel/profile_view_model.dart';
 import 'package:aimedic/core/widgets/rounded_button.dart';
 import 'package:file_picker/file_picker.dart';
 
-import '../../globalCubit/global_cubit.dart';
+import '../../home/globalCubit/global_cubit.dart';
 import '../model/profile_update_response.dart';
 
 class ProfileView extends ProfileViewModel {
   @override
   void initState() {
-    BlocProvider.of<GlobalCubit>(context).getTitle('Profile');
+    BlocProvider.of<GlobalCubit>(context).getTitle('Profile',2);
 
     super.initState();
   }
-
+  @override
+  bool get wantKeepAlive => true;
   final TextEditingController controllerName = TextEditingController();
   final TextEditingController controllerCode = TextEditingController();
 
@@ -51,15 +52,14 @@ class ProfileView extends ProfileViewModel {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(
-                      height: 56,
+                      height: 20,
                     ),
                     Container(
                       width: double.maxFinite,
                       child: Container(
-                        height: 140,
-                        width: 140,
+                        height: 90,
+                        width: 90,
                         alignment: Alignment.center,
-                        padding: EdgeInsets.all(45),
                         decoration: BoxDecoration(
                             border: Border.all(
                               color: Colors.white70,
@@ -69,16 +69,16 @@ class ProfileView extends ProfileViewModel {
                         child: (state.profileModel.avatar ?? '').isEmpty
                             ? SvgPicture.asset(
                                 'assets/images/Iconly-Bold-Add User.svg',
-                                width: 50,
-                                height: 50,
+                                width: 40,
+                                height: 40,
                               )
                             : CircleAvatar(
                                 backgroundColor: Colors.white,
                                 child: ClipRect(
                                     child: Image.network(
                                   (state.profileModel.avatar)!,
-                                  height: 50,
-                                  width: 50,
+                                  height: 40,
+                                  width: 40,
                                 )),
                               ),
                       ),
@@ -119,7 +119,7 @@ class ProfileView extends ProfileViewModel {
                                     'Change image',
                                     style: TextStyle(
                                       color: Colors.white70,
-                                      fontSize: 18,
+                                      fontSize: 14,
                                       fontWeight: FontWeight.w500,
                                     ),
                                   ),
@@ -129,7 +129,7 @@ class ProfileView extends ProfileViewModel {
                             'Profile image',
                             style: TextStyle(
                               color: Colors.white70,
-                              fontSize: 18,
+                              fontSize: 14,
                               fontWeight: FontWeight.w500,
                             ),
                           ),
@@ -137,14 +137,14 @@ class ProfileView extends ProfileViewModel {
                       ),
                     ),
                     SizedBox(
-                      height: 50,
+                      height: 20,
                     ),
                     Text(
                       'Full name',
                       textAlign: TextAlign.start,
                       style: TextStyle(
                         color: Colors.white70,
-                        fontSize: 18,
+                        fontSize: 14,
                         fontWeight: FontWeight.w400,
                       ),
                     ),
@@ -160,14 +160,14 @@ class ProfileView extends ProfileViewModel {
                       controller: controllerName,
                     ),
                     SizedBox(
-                      height: 20,
+                      height: 15,
                     ),
                     Text(
                       'Medical system code',
                       textAlign: TextAlign.start,
                       style: TextStyle(
                         color: Colors.white70,
-                        fontSize: 18,
+                        fontSize: 14,
                         fontWeight: FontWeight.w400,
                       ),
                     ),
@@ -183,7 +183,7 @@ class ProfileView extends ProfileViewModel {
                       keyboardType: TextInputType.text,
                     ),
                     SizedBox(
-                      height: 16,
+                      height: 10,
                     ),
                     RoundedButton(
                       text: "Submit",

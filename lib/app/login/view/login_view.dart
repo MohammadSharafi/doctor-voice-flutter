@@ -10,6 +10,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:aimedic/core/widgets/login_background.dart';
 import 'package:aimedic/core/widgets/rounded_button.dart';
 import 'package:aimedic/core/widgets/rounded_input.dart';
+import 'package:hexcolor/hexcolor.dart';
 
 enum LoginBtnState { Loeded, Loading, InitState, Error }
 
@@ -22,146 +23,131 @@ class LoginView extends LoginViewModel {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Scaffold(
-      body: GestureDetector(
-        onTap: () => FocusScope.of(context).unfocus(),
-        child: Background(
-          child: Form(
-            key: _formKey,
-            autovalidateMode: AutovalidateMode.onUserInteraction,
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  SizedBox(
-                    height: 65,
-                  ),
-                  Row(
-                    children: [
-                      Image.asset(
-                        'assets/images/dv.png',
-                        height: 60,
-                        width: 60,
-                      ),
-                      Spacer(),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 12,
-                  ),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      "Login to Doctor Voice",
-                      style: GoogleFonts.yantramanav(
-                        textStyle: TextStyle(
-                          fontSize: 26,
-                          color: Colors.white,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 8,
-                  ),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      "Neuro-Linguistic Programming",
-                      style: GoogleFonts.yantramanav(
-                        textStyle: TextStyle(
-                          fontSize: 16,
-                          color: Colors.white54,
-                          fontWeight: FontWeight.w300,
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 54,
-                  ),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      "Enter your mobile number",
-                      style: GoogleFonts.yantramanav(
-                        textStyle: TextStyle(
-                          fontSize: 16,
-                          color: Colors.white.withOpacity(0.8),
-                          fontWeight: FontWeight.w300,
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 12,
-                  ),
-                  RoundedInputField(
-                    keyboardType: TextInputType.phone,
-                    onChanged: (String value) {
-                      if (value.length == 11 &&
-                          value.substring(0, 2).contains('09')) {}
-                    },
-                    controller: controllerPhone,
-                  ),
-                  SizedBox(
-                    height: 30,
-                  ),
-                  BlocBuilder<LoginCubit, LoginState>(
-                    builder: (context, state) {
-                      if (state is LoadedState) {
-                        fetchUserLogin(
-                          state.response,
-                        );
-                      }
-                      if (state is LoadingState) {
-                        return RoundedButtonLoading();
-                      } else if (state is ErrorState) {
-                        scheduleMicrotask(() {
-                          SnackBar(
-                            backgroundColor: Colors.red,
-                            content: Text(
-                              "Please Try again",
-                              style: TextStyle(
+    return BlocBuilder<LoginCubit, LoginState>(
+      builder: (context, state) {
+        if (state is LoadedState) {
+          fetchUserLogin(
+            state.response,
+          );
+        }
+        return Scaffold(
+          resizeToAvoidBottomInset: false,
+          body: Stack(
+            children: [
+              GestureDetector(
+                onTap: () => FocusScope.of(context).unfocus(),
+                child: Background(
+                  child: Form(
+                    key: _formKey,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    child: Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          SizedBox(
+                            height: 65,
+                          ),
+                          Row(
+                            children: [
+                              Image.asset(
+                                'assets/images/dv.png',
+                                height: 60,
+                                width: 60,
+                              ),
+                              Spacer(),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 12,
+                          ),
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              "Login to Doctor Voice",
+                              style: GoogleFonts.yantramanav(
+                                textStyle: TextStyle(
+                                  fontSize: 26,
                                   color: Colors.white,
-                                  fontSize: 17.0,
-                                  fontWeight: FontWeight.w300),
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
                             ),
-                          );
-                        }
-                        );
-
-
-                        return RoundedButton(
-                          text: "Login",
-                          press: () {
-                            if (_formKey.currentState?.validate() ?? false) {
-                              BlocProvider.of<LoginCubit>(context)
-                                  .login(controllerPhone.text);
-                            }
-                          },
-                        );
-                      } else
-                        return RoundedButton(
-                          text: "Login",
-                          press: () {
-                            if (_formKey.currentState?.validate() ?? false) {
-                              BlocProvider.of<LoginCubit>(context)
-                                  .login(controllerPhone.text);
-                            }
-                          },
-                        );
-                    },
+                          ),
+                          SizedBox(
+                            height: 8,
+                          ),
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              "Neuro-Linguistic Programming",
+                              style: GoogleFonts.yantramanav(
+                                textStyle: TextStyle(
+                                  fontSize: 16,
+                                  color: HexColor('#717274'),
+                                  fontWeight: FontWeight.w300,
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 54,
+                          ),
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              "Enter your mobile number",
+                              style: GoogleFonts.yantramanav(
+                                textStyle: TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.white.withOpacity(0.8),
+                                  fontWeight: FontWeight.w300,
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 12,
+                          ),
+                          RoundedInputField(
+                            keyboardType: TextInputType.phone,
+                            onChanged: (String value) {
+                              if (value.length == 11 &&
+                                  value.substring(0, 2).contains('09')) {}
+                            },
+                            controller: controllerPhone,
+                          ),
+                          SizedBox(
+                            height: 30,
+                          ),
+                          RoundedButton(
+                            text: "Login",
+                            press: () {
+                              if (_formKey.currentState?.validate() ?? false) {
+                                BlocProvider.of<LoginCubit>(context)
+                                    .login(controllerPhone.text);
+                              }
+                            },
+                          ),
+                          SizedBox(height: size.height * 0.03),
+                        ],
+                      ),
+                    ),
                   ),
-                  SizedBox(height: size.height * 0.03),
-                ],
+                ),
               ),
-            ),
+              (state is LoadingState)
+                  ? Center(
+                    child: SizedBox(
+                        width: 30,
+                        height: 30,
+                        child: CircularProgressIndicator()),
+                  )
+                  : Container(),
+            ],
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }

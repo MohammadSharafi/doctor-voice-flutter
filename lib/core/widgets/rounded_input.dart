@@ -27,7 +27,7 @@ class RoundedInputField extends StatelessWidget {
           left: 0,
           right: 0,
           child: Container(
-            height: 50,
+            height: 45,
             decoration: BoxDecoration(
               color: AppColors.primaryLightBlue,
               borderRadius: BorderRadius.circular(12),
@@ -36,7 +36,7 @@ class RoundedInputField extends StatelessWidget {
         ),
 
         Container(
-          height: 50,
+          height: 45,
           margin: EdgeInsets.only(bottom: 8),
           padding: EdgeInsets.all(8),
           decoration: BoxDecoration(
@@ -55,7 +55,7 @@ class RoundedInputField extends StatelessWidget {
               cursorColor: AppColors.primaryLightBlue,
               style: TextStyle(
                 color: Colors.white,
-                fontSize: 20
+                fontSize: 16
               ),
             ),
           ),

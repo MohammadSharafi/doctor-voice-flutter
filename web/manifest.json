@@ -1,6 +1,6 @@
 {
-    "name": "uzel_bilisim_task",
-    "short_name": "uzel_bilisim_task",
+    "name": "Doctor Voice",
+    "short_name": "Doctor Voice",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

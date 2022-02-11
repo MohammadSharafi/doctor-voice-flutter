@@ -5,13 +5,15 @@ part 'global_state.dart';
 
 class GlobalCubit extends Cubit<GlobalState> {
   final String title;
+  final int currentIndex;
 
-  GlobalCubit({
+  GlobalCubit(
+    this.currentIndex, {
     required this.title,
   }) : super(InitialState());
 
-  void getTitle(String page) {
-    emit(GlobalLoadedState(page));
+  void getTitle(String page,int index) {
+    emit(GlobalLoadedState(page,index));
   }
 
   void refresh() {

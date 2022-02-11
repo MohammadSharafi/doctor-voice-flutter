@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hexcolor/hexcolor.dart';
 
 abstract class AppColors {
   //Grey theme
@@ -12,11 +13,11 @@ abstract class AppColors {
   static final highlightColor = Colors.white10;
   static final shadowColor = Colors.black45;
   static final accentColor = Colors.grey;
-  static Color primaryDarkBlue = Color.fromRGBO(4, 50, 88, 1.0);
-  static Color primaryLightBlue = Color.fromRGBO(0, 94, 243, 1.0);
-  static Color darkBG = Color.fromRGBO(21, 40, 56, 1.0);
+  static Color primaryDarkBlue =  HexColor("#002F55");
+  static Color primaryLightBlue = HexColor("#005EF3");
+  static Color darkBG = HexColor("#0B151D");
   static Color primaryBlack = Color.fromRGBO(6, 6, 6, 1.0);
-  static Color primaryGray = Color.fromRGBO(106, 128, 154, 1.0);
+  static Color primaryGray = HexColor("#2F353A");
   static Color primaryRed= Color.fromRGBO(255, 96, 86, 1.0);
 
   //status Colors

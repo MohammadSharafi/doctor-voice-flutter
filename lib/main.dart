@@ -2,7 +2,6 @@ import 'package:aimedic/app/JustView/AboutUs.dart';
 import 'package:aimedic/app/JustView/ContactUs.dart';
 import 'package:aimedic/app/dashBoard/cubit/dashboard_cubit.dart';
 import 'package:aimedic/app/dashBoard/dashboard.dart';
-import 'package:aimedic/app/globalCubit/global_cubit.dart';
 import 'package:aimedic/app/otp/cubit/otp_cubit.dart';
 import 'package:aimedic/app/profile/cubit/avatar_cubit.dart';
 import 'package:aimedic/app/profile/service/profile_service.dart';
@@ -14,6 +13,7 @@ import 'package:aimedic/app/splash/splash.dart';
 import 'package:aimedic/core/network/network_service.dart';
 import 'app/OTP/service/OTP_services.dart';
 import 'app/dashBoard/service/dashboard_service.dart';
+import 'app/home/globalCubit/global_cubit.dart';
 import 'app/home/home.dart';
 import 'app/login/cubit/login_cubit.dart';
 import 'app/login/login.dart';
@@ -26,7 +26,6 @@ import 'app/record/cubit/uploadVoice/uploadvoice_cubit.dart';
 import 'app/record/service/record_services.dart';
 import 'app/recordList/cubit/voice_refactor_cubit.dart';
 import 'app/recordList/service/voicelist_service.dart';
-import 'app/recordPage/recordpage.dart';
 import 'app/splash/cubit/splash_cubit.dart';
 import 'app/titlePages/cubit/texts_cubit.dart';
 import 'app/titlePages/service/titlePage_service.dart';
@@ -84,7 +83,7 @@ void main() {
         ),
         BlocProvider<GlobalCubit>(
           create: (context) =>
-              GlobalCubit(title: ''),
+              GlobalCubit(0,title: ''),
         ),
       ],
       child: MyApp(),
@@ -103,7 +102,6 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: SplashView.routeName,
       routes: {
-        RecorderPage.routeName: (context) => RecorderPage(),
         SplashView.routeName: (context) => SplashView(),
         Home.routeName: (context) => Home(),
         OTP.routeName: (context) => OTP(),

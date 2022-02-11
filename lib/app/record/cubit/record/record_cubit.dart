@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:aimedic/core/constants/paths.dart';
 import 'package:aimedic/core/constants/recorder_constants.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:record/record.dart';
 part 'record_state.dart';
@@ -25,22 +26,27 @@ class RecordCubit extends Cubit<RecordState> {
         permissions[Permission.microphone]!.isGranted;
 
     if (permissionsGranted) {
-      Directory appFolder = Directory(Paths.recording);
+      Directory appDocDirectory = await getApplicationDocumentsDirectory();
+      var filepath ='';
+      Directory appFolder = Directory(appDocDirectory.path);
       bool appFolderExists = await appFolder.exists();
       if (!appFolderExists) {
         final created = await appFolder.create(recursive: true);
         print(created.path);
       }
 
-      final filepath = Paths.recording +
-          '/' +
-          DateTime.now().millisecondsSinceEpoch.toString() +
-          RecorderConstants.fileExtention;
-      print(filepath);
+      Directory(appDocDirectory.path)
+          .create(recursive: true)
+          .then((Directory directory) async {
+        filepath =directory.path+'/'+DateTime.now().millisecondsSinceEpoch.toString() + RecorderConstants.fileExtention ;
+        print('Path of New Dir: '+directory.path);
+        await _audioRecorder.start(path: filepath);
+        emit(RecordOn());
+      });
 
-      await _audioRecorder.start(path: filepath);
 
-      emit(RecordOn());
+
+
     } else {
       print('Permissions not granted');
     }

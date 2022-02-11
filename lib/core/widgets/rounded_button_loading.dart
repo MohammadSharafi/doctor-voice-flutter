@@ -28,7 +28,7 @@ class RoundedButtonLoading extends StatelessWidget {
 
   Widget newElevatedButton() {
     return Container(
-      height: 60,
+      height: 50,
       child: ElevatedButton(
         child: Container(
             height: 30, width: 30, child: CircularProgressIndicator()),

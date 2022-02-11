@@ -6,16 +6,18 @@ import 'package:flutter/widgets.dart';
 import 'package:aimedic/app/dashBoard/viewModel/dashboard_view_model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../globalCubit/global_cubit.dart';
+import '../../../core/widgets/login_background.dart';
+import '../../home/globalCubit/global_cubit.dart';
 
 class DashBoardView extends DashBoardViewModel {
   @override
   void initState() {
     super.initState();
-    BlocProvider.of<GlobalCubit>(context).getTitle('Dashboard');
+    BlocProvider.of<GlobalCubit>(context).getTitle('Dashboard',0);
 
   }
-
+  @override
+  bool get wantKeepAlive => true;
   @override
   void dispose() {
     // TODO: implement dispose
@@ -29,16 +31,16 @@ class DashBoardView extends DashBoardViewModel {
     return BlocBuilder<DashBoardCubit, DashBoardState>(
       builder: (context, state) {
         if (state is LoadingState) {
-          return CircularProgressIndicator();
+          return Center(child: CircularProgressIndicator());
         } else if (state is LoadedState) {
          final dashModel= state.response;
           return Container(
-            margin: EdgeInsets.symmetric(vertical: 30, horizontal: 20),
+            margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
             child: Column(
               children: [
                 //Recording details
                 Container(
-                  height: MediaQuery.of(context).size.height * ((3.4) / 8),
+                  height: MediaQuery.of(context).size.height * ((3.4) / 8.9),
                   width: MediaQuery.of(context).size.width,
                   decoration: BoxDecoration(
                     color: Colors.black,
@@ -50,14 +52,14 @@ class DashBoardView extends DashBoardViewModel {
                   child: Column(
                     children: [
                       SizedBox(
-                        height: 12,
+                        height: 8,
                       ),
                       Text(
                         'Recording details',
                         textAlign: TextAlign.left,
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: 18,
+                          fontSize: 16,
                           fontWeight: FontWeight.w400,
                         ),
                       ),
@@ -84,7 +86,7 @@ class DashBoardView extends DashBoardViewModel {
                                     textAlign: TextAlign.left,
                                     style: TextStyle(
                                       color: Colors.white,
-                                      fontSize: 18,
+                                      fontSize: 16,
                                       fontWeight: FontWeight.w300,
                                     ),
                                   ),
@@ -96,7 +98,7 @@ class DashBoardView extends DashBoardViewModel {
                                     textAlign: TextAlign.left,
                                     style: TextStyle(
                                       color: Colors.white70,
-                                      fontSize: 15,
+                                      fontSize: 13,
                                       fontWeight: FontWeight.w300,
                                     ),
                                   ),
@@ -118,7 +120,7 @@ class DashBoardView extends DashBoardViewModel {
                                   textAlign: TextAlign.left,
                                   style: TextStyle(
                                     color: AppColors.primaryLightBlue,
-                                    fontSize: 18,
+                                    fontSize: 16,
                                     fontWeight: FontWeight.w400,
                                   ),
                                 ),
@@ -143,7 +145,7 @@ class DashBoardView extends DashBoardViewModel {
                                     textAlign: TextAlign.left,
                                     style: TextStyle(
                                       color: Colors.white,
-                                      fontSize: 18,
+                                      fontSize: 16,
                                       fontWeight: FontWeight.w300,
                                     ),
                                   ),
@@ -155,7 +157,7 @@ class DashBoardView extends DashBoardViewModel {
                                     textAlign: TextAlign.left,
                                     style: TextStyle(
                                       color: Colors.white70,
-                                      fontSize: 15,
+                                      fontSize: 13,
                                       fontWeight: FontWeight.w300,
                                     ),
                                   ),
@@ -177,7 +179,7 @@ class DashBoardView extends DashBoardViewModel {
                                   textAlign: TextAlign.left,
                                   style: TextStyle(
                                     color: AppColors.primaryLightBlue,
-                                    fontSize: 18,
+                                    fontSize: 16,
                                     fontWeight: FontWeight.w400,
                                   ),
                                 ),
@@ -202,7 +204,7 @@ class DashBoardView extends DashBoardViewModel {
                                     textAlign: TextAlign.left,
                                     style: TextStyle(
                                       color: Colors.white,
-                                      fontSize: 18,
+                                      fontSize: 16,
                                       fontWeight: FontWeight.w300,
                                     ),
                                   ),
@@ -214,7 +216,7 @@ class DashBoardView extends DashBoardViewModel {
                                     textAlign: TextAlign.left,
                                     style: TextStyle(
                                       color: Colors.white70,
-                                      fontSize: 15,
+                                      fontSize: 13,
                                       fontWeight: FontWeight.w300,
                                     ),
                                   ),
@@ -237,7 +239,7 @@ class DashBoardView extends DashBoardViewModel {
                                   textAlign: TextAlign.left,
                                   style: TextStyle(
                                     color: AppColors.primaryLightBlue,
-                                    fontSize: 18,
+                                    fontSize: 16,
                                     fontWeight: FontWeight.w400,
                                   ),
                                 ),
@@ -250,7 +252,7 @@ class DashBoardView extends DashBoardViewModel {
                   ),
                 ),
                 SizedBox(
-                  height: MediaQuery.of(context).size.height * (1 / 24),
+                  height: MediaQuery.of(context).size.height * (1 / 30),
                 ),
                 //Recording status
                 Container(
@@ -273,7 +275,7 @@ class DashBoardView extends DashBoardViewModel {
                         textAlign: TextAlign.left,
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: 18,
+                          fontSize: 16,
                           fontWeight: FontWeight.w400,
                         ),
                       ),
@@ -285,12 +287,12 @@ class DashBoardView extends DashBoardViewModel {
                         color: Color.fromARGB(255, 21, 34, 45),
                       ),
                       SizedBox(
-                        height: 16,
+                        height: 8,
                       ),
                       Row(
                         children: [
                           SizedBox(
-                            width: 16,
+                            width: 9,
                           ),
                           //confirmed
                           Expanded(
@@ -316,7 +318,7 @@ class DashBoardView extends DashBoardViewModel {
                                       textAlign: TextAlign.left,
                                       style: TextStyle(
                                         color: AppColors.greenStatus,
-                                        fontSize: 16,
+                                        fontSize: 12,
                                         fontWeight: FontWeight.w400,
                                       ),
                                     ),
@@ -325,7 +327,7 @@ class DashBoardView extends DashBoardViewModel {
                                       textAlign: TextAlign.left,
                                       style: TextStyle(
                                         color: AppColors.greenStatus,
-                                        fontSize: 18,
+                                        fontSize: 16,
                                         fontWeight: FontWeight.w400,
                                       ),
                                     ),
@@ -359,7 +361,7 @@ class DashBoardView extends DashBoardViewModel {
                                       textAlign: TextAlign.left,
                                       style: TextStyle(
                                         color: AppColors.blueStatus,
-                                        fontSize: 16,
+                                        fontSize: 12,
                                         fontWeight: FontWeight.w400,
                                       ),
                                     ),
@@ -368,7 +370,7 @@ class DashBoardView extends DashBoardViewModel {
                                       textAlign: TextAlign.left,
                                       style: TextStyle(
                                         color: AppColors.blueStatus,
-                                        fontSize: 18,
+                                        fontSize: 16,
                                         fontWeight: FontWeight.w400,
                                       ),
                                     ),
@@ -402,7 +404,7 @@ class DashBoardView extends DashBoardViewModel {
                                       textAlign: TextAlign.left,
                                       style: TextStyle(
                                         color: AppColors.redStatus,
-                                        fontSize: 16,
+                                        fontSize: 12,
                                         fontWeight: FontWeight.w400,
                                       ),
                                     ),
@@ -411,7 +413,7 @@ class DashBoardView extends DashBoardViewModel {
                                       textAlign: TextAlign.left,
                                       style: TextStyle(
                                         color: AppColors.redStatus,
-                                        fontSize: 18,
+                                        fontSize: 16,
                                         fontWeight: FontWeight.w400,
                                       ),
                                     ),
@@ -419,7 +421,7 @@ class DashBoardView extends DashBoardViewModel {
                                 ),
                               )),
                           SizedBox(
-                            width: 16,
+                            width: 9,
                           ),
                         ],
                       ),

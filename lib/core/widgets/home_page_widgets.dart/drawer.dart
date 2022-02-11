@@ -61,104 +61,106 @@ class _AppDrawerState extends State<AppDrawer>
     return Column(
       children: [
         Container(
-          height: 300,
           width: MediaQuery.of(context).size.width,
           padding: EdgeInsets.symmetric(horizontal: 12),
           color: AppColors.darkBG,
           child: Column(
             children: [
               SizedBox(
-                height: 55,
-              ),
-              GestureDetector(
-                onTap: onContactUsTap,
-                child: Row(
-                  children: [
-                    SvgPicture.asset(
-                      'assets/images/Iconly-Bold-Call.svg',
-                      height: 16,
-                    ),
-                    SizedBox(
-                      width: 12,
-                    ),
-                    Text(
-                      'Contact us',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 15,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: 8,
-              ),
-              Divider(
-                color: Colors.white,
-                thickness: 0.2,
-              ),
-              SizedBox(
-                height: 8,
-              ),
-              GestureDetector(
-                onTap: onAboutUsTap,
-                child: Row(
-                  children: [
-                    SvgPicture.asset(
-                      'assets/images/Iconly-Bold-Info Square.svg',
-                      height: 16,
-                    ),
-                    SizedBox(
-                      width: 12,
-                    ),
-                    Text(
-                      'About us',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 15,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: 8,
-              ),
-              Divider(
-                color: Colors.white,
-                thickness: 0.2,
-              ),
-              SizedBox(
                 height: 50,
               ),
               GestureDetector(
-                onTap: onSignUpTap,
-                child: Row(
-                  children: [
-                    SvgPicture.asset(
-                      'assets/images/Logout.svg',
-                      height: 16,
-                      color: AppColors.redStatus,
-                    ),
-                    SizedBox(
-                      width: 12,
-                    ),
-                    Text(
-                      'Sign out',
-                      style: TextStyle(
-                        color: AppColors.redStatus,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 15,
+                onTap: onContactUsTap,
+                child: Container(
+                  height:50 ,
+                  child: Row(
+                    children: [
+                      SvgPicture.asset(
+                        'assets/images/Iconly-Bold-Call.svg',
+                        height: 16,
                       ),
-                    ),
-                  ],
+                      SizedBox(
+                        width: 12,
+                      ),
+                      Text(
+                        'Contact us',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w400,
+                          fontSize: 15,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+
+              Divider(
+                color: Colors.white.withOpacity(0.5),
+                thickness: 0.2,
+              ),
+
+              GestureDetector(
+                onTap: onAboutUsTap,
+                child: Container(
+                  height: 50,
+                  child: Row(
+                    children: [
+                      SvgPicture.asset(
+                        'assets/images/Iconly-Bold-Info Square.svg',
+                        height: 16,
+                      ),
+                      SizedBox(
+                        width: 12,
+                      ),
+                      Text(
+                        'About us',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w400,
+                          fontSize: 15,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+
+              Divider(
+                color: Colors.white.withOpacity(0.5),
+                thickness: 0.2,
+              ),
+              SizedBox(
+                height: 36,
+              ),
+              GestureDetector(
+                onTap: onSignUpTap,
+                child: Container(
+                  height: 50,
+                  child: Row(
+                    children: [
+                      SvgPicture.asset(
+                        'assets/images/Logout.svg',
+                        height: 16,
+                        color: AppColors.redStatus,
+                      ),
+                      SizedBox(
+                        width: 12,
+                      ),
+                      Text(
+                        'Sign out',
+                        style: TextStyle(
+                          color: AppColors.redStatus,
+                          fontWeight: FontWeight.w400,
+                          fontSize: 15,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
               SizedBox(
-                height: 8,
+                height: 10,
               ),
             ],
           ),

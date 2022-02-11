@@ -16,6 +16,8 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
       centerTitle: true,
       elevation: 4,
       shadowColor: Colors.black,
+      toolbarHeight: 54,
+
       actions: [
 
         Container(
@@ -39,7 +41,7 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
         title,
         style: GoogleFonts.yantramanav(
           textStyle: TextStyle(
-            fontSize: 22,
+            fontSize: 16,
             color: Colors.white,
             fontWeight: FontWeight.w500,
           ),

@@ -1,4 +1,3 @@
-import 'package:aimedic/app/globalCubit/global_cubit.dart';
 import 'package:aimedic/app/recordPage/recordpage.dart';
 import 'package:aimedic/app/titlePages/cubit/texts_cubit.dart';
 import 'package:aimedic/app/titlePages/model/ScreenArguments.dart';
@@ -7,10 +6,13 @@ import 'package:flutter/material.dart';
 import 'package:aimedic/core/widgets/home_page_widgets.dart/TaskWidget.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+
+import '../../home/globalCubit/global_cubit.dart';
+
 class TitlePagesView extends TitlePagesViewModel {
   @override
   void initState() {
-    BlocProvider.of<GlobalCubit>(context).getTitle('Text List');
+    BlocProvider.of<GlobalCubit>(context).getTitle('Text List',1);
     super.initState();
   }
 
@@ -18,6 +20,9 @@ class TitlePagesView extends TitlePagesViewModel {
 
   int solved = 0;
   int total = 0;
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   Widget build(BuildContext context) {
@@ -36,62 +41,62 @@ class TitlePagesView extends TitlePagesViewModel {
           solved = 0;
           total = 0;
           texts.forEach((item) {
-            if(item.is_recorded!)
-              solved++;
+            if (item.is_recorded!) solved++;
             total++;
           });
 
           return Column(
             children: [
-            Expanded(
-              flex: 5,
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            'Tasks given',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 15,
-                              fontWeight: FontWeight.w500,
+              Expanded(
+                flex: 8,
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              'Tasks given',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                              ),
                             ),
                           ),
-                        ),
-                        Spacer(),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            '$solved\\$total',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 15,
-                              fontWeight: FontWeight.w300,
+                          Spacer(),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              '$solved\\$total',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w300,
+                              ),
                             ),
                           ),
-                        ),
-
-                      ],
-                    ),
-                    SizedBox(height: 4,),
-                    LinearPercentIndicator( //leaner progress bar
-                    animation: true,
-                    animationDuration: 1000,
-                    lineHeight: 4.0,
-                    percent:(solved/total),
-                    linearStrokeCap: LinearStrokeCap.roundAll,
-                    progressColor: Colors.blue[400],
-                    backgroundColor: Colors.grey[300],
-          ),
-                  ],
+                        ],
+                      ),
+                      SizedBox(
+                        height: 4,
+                      ),
+                      LinearPercentIndicator(
+                        //leaner progress bar
+                        animation: true,
+                        animationDuration: 1000,
+                        lineHeight: 4.0,
+                        percent: (solved / total),
+                        linearStrokeCap: LinearStrokeCap.roundAll,
+                        progressColor: Colors.blue[400],
+                        backgroundColor: Colors.grey[300],
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-
               Expanded(
                 flex: 50,
                 child: ListView.builder(
@@ -99,15 +104,22 @@ class TitlePagesView extends TitlePagesViewModel {
                   itemBuilder: (context, index) {
                     return GestureDetector(
                       onTap: () {
-                        Navigator.of(context).pushNamed(RecorderPage.routeName,
-                            arguments: ScreenArguments(texts[index].text ?? '',
-                                texts[index].id ?? '', index));
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (BuildContext context) => RecorderPage(
+                              args: ScreenArguments(texts[index].text ?? '',
+                                  texts[index].id ?? '', index),
+                            ),
+                          ),
+                        );
                       },
                       child: Task(
                         text: texts[index].text ?? '',
                         index: index,
-                        status:
-                            texts[index].is_recorded! ? Status.Done : Status.NotDone,
+                        status: texts[index].is_recorded!
+                            ? Status.Done
+                            : Status.NotDone,
                         key: ValueKey<int>(index),
                       ),
                     );

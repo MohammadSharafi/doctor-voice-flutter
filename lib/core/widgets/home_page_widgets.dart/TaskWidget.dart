@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hexcolor/hexcolor.dart';
 
 enum Status { Done, NotDone }
 
@@ -16,14 +17,14 @@ class Task extends StatelessWidget {
       constraints: BoxConstraints(
         maxHeight: double.infinity,
       ),
-      margin: EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+      margin: EdgeInsets.symmetric(horizontal: 13, vertical: 6),
       decoration: BoxDecoration(
         color: status == Status.NotDone ? Colors.black : Colors.black87,
         borderRadius: BorderRadius.all(Radius.circular(10)),
         border: Border.all(
             color: status == Status.NotDone
                 ? Color.fromARGB(255, 91, 91, 91)
-                : Color.fromARGB(168, 91, 91, 91)),
+                : Color.fromARGB(138, 91, 91, 91)),
       ),
       child: IntrinsicHeight(
         child: Row(
@@ -32,7 +33,7 @@ class Task extends StatelessWidget {
               width: 12,
             ),
             Text(
-              '$index',
+              '${index+1}',
               style: TextStyle(
                 color: status == Status.NotDone
                     ? Colors.white70
@@ -45,10 +46,10 @@ class Task extends StatelessWidget {
               width: 12,
             ),
             Container(
-              width: 0.3,
+              width: 0.5,
               color: status == Status.NotDone
-                  ? Colors.white
-                  : Color.fromARGB(255, 127, 120, 120),
+                  ? HexColor('#303030')
+                  : Color.fromARGB(124, 127, 120, 120),
               margin: EdgeInsets.symmetric(vertical: 5),
             ),
             SizedBox(
@@ -65,7 +66,7 @@ class Task extends StatelessWidget {
                       color: status == Status.NotDone
                           ? Colors.white
                           : Color.fromARGB(255, 127, 120, 120),
-                      fontSize: 16,
+                      fontSize: 13,
                       fontWeight: FontWeight.w300,
                       height: 1.5),
                   maxLines: 4,
