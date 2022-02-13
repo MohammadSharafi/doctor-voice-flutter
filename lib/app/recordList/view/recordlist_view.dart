@@ -5,10 +5,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../core/constants/app_colors.dart';
+import '../../../core/constants/loading.dart';
+import '../../home/globalCubit/global_cubit.dart';
+
 class RecordListView extends RecordListViewModel {
   @override
   void dispose() {
     super.dispose();
+  }
+  @override
+  void initstate() {
+    BlocProvider.of<GlobalCubit>(context).getTitle('List',1);
+
+    super.initState();
   }
 
   @override
@@ -17,11 +27,19 @@ class RecordListView extends RecordListViewModel {
       builder: (context, state) {
         if (state is LoadingState) {
           return Center(
-            child: CircularProgressIndicator(),
+            child: Container(
+                color: AppColors.loadingBg,
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height,
+                child: Loading.loading),
           );
         } else if (state is ErrorState) {
           return Center(
-            child: CircularProgressIndicator(),
+            child: Container(
+                color: AppColors.loadingBg,
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height,
+                child: Loading.loading),
           );
         } else if (state is LoadedState) {
           final voices = state.voiceList;

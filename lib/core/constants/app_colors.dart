@@ -27,4 +27,5 @@ abstract class AppColors {
   static Color redStatusBg = Color.fromRGBO(25, 2, 0, 1.0);
   static Color greenStatus= Color.fromRGBO(29, 191, 127, 1.0);
   static Color greenStatusBg= Color.fromRGBO(0, 20, 10, 1.0);
+  static Color loadingBg= Color.fromRGBO(11, 21, 29, 0.5411764705882353);
 }

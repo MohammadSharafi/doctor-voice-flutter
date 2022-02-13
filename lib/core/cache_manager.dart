@@ -1,3 +1,4 @@
+import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CacheManager {
@@ -30,6 +31,23 @@ class CacheManager {
   Future<String?> getRefreshToken() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString(CacheManagerKey.REFRESH_TOKEN.toString());
+  }
+  /// this will delete cache
+  Future<void> deleteCacheDir() async {
+    final cacheDir = await getTemporaryDirectory();
+
+    if (cacheDir.existsSync()) {
+      cacheDir.deleteSync(recursive: true);
+    }
+  }
+
+  /// this will delete app's storage
+  Future<void> deleteAppDir() async {
+    final appDir = await getApplicationSupportDirectory();
+
+    if(appDir.existsSync()){
+      appDir.deleteSync(recursive: true);
+    }
   }
 }
 

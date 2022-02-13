@@ -27,7 +27,7 @@ abstract class OTPViewModel extends State<OTP>
       saveToken(response.access_token ?? '');
       saveRefreshToken(response.refresh_token ?? '');
       WidgetsBinding.instance?.addPostFrameCallback((_) {
-        Navigator.of(context).pushNamed(Home.routeName);
+        Navigator.of(context).pushNamedAndRemoveUntil(Home.routeName,(Route<dynamic> route) => false);
       });
     } else if (response.access_token == null) {
       BlocProvider.of<OTPCubit>(context).refresh();

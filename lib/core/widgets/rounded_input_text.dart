@@ -36,8 +36,9 @@ class RoundedInputFieldtext extends StatelessWidget {
         ),
 
         Container(
-          height: 45,
+          height: 50,
           margin: EdgeInsets.only(bottom: 4),
+          padding: EdgeInsets.symmetric(horizontal: 12),
           decoration: BoxDecoration(
             color: AppColors.primaryGray,
             borderRadius: BorderRadius.circular(12),

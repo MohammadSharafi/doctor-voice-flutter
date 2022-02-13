@@ -11,6 +11,6 @@ abstract class RecorderPageViewModel extends State<RecorderPage> {
 
 
   void navigateToHome() {
-    Navigator.of(context).pushNamed(Home.routeName);
+    Navigator.of(context).pushNamedAndRemoveUntil(Home.routeName,(Route<dynamic> route) => false);
   }
 }

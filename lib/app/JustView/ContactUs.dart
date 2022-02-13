@@ -34,7 +34,9 @@ class _ContactUs extends State<ContactUs> {
                 CacheManager().saveToken('');
                 CacheManager().saveRefreshToken('');
                 CacheManager().saveOTPToken('');
-                Navigator.of(context).pushNamed(Login.routeName);
+                Navigator.of(context).pushNamedAndRemoveUntil(Login.routeName,(Route<dynamic> route) => false);
+                CacheManager().deleteCacheDir();
+                CacheManager().deleteAppDir();
               },
               onContactUsTap: () {
                 Navigator.of(context).pushNamed(AboutUs.routeName);
@@ -48,7 +50,7 @@ class _ContactUs extends State<ContactUs> {
             ),
             body: Background(
               child: Container(
-                margin: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                margin: EdgeInsets.symmetric(horizontal: 20, vertical: 30),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -56,8 +58,8 @@ class _ContactUs extends State<ContactUs> {
                       children: [
                         Image.asset(
                           'assets/images/dv.png',
-                          height: 25,
-                          width: 25,
+                          height: 30,
+                          width: 30,
                         ),
                         SizedBox(
                           width: 12,
@@ -78,11 +80,12 @@ class _ContactUs extends State<ContactUs> {
                     Text(
                       "AImedic is a start-up studio, aiming to offer AI products in the healthcare industry. Also, training competent data scientists is a part of our mission.\n"+
                       "Our current teams are working on medical imaging, EHR analysis, smart assists, and medical NLP problems.\n"+
-                    "With a belief in “Intelligence brings hope“, AImedic is going to bring hope with data-driven solutions",
+                      "With a belief in “Intelligence brings hope“, AImedic is going to bring hope with data-driven solutions",
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 12,
+                        fontSize: 13,
                         fontWeight: FontWeight.w300,
+                        height: 2
                       ),
                     ),
 
@@ -94,8 +97,8 @@ class _ContactUs extends State<ContactUs> {
                       children: [
                         SvgPicture.asset(
                           'assets/images/Iconly-Bold-Call.svg',
-                          height: 20,
-                          width: 20,
+                          height: 25,
+                          width: 25,
                         ),
                         SizedBox(
                           width: 12,
@@ -117,7 +120,7 @@ class _ContactUs extends State<ContactUs> {
                       '021-65659005 / 021-65659005',
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 12,
+                        fontSize: 13,
                         fontWeight: FontWeight.w300,
                       ),
                       textAlign: TextAlign.left,
@@ -129,8 +132,8 @@ class _ContactUs extends State<ContactUs> {
                       children: [
                         SvgPicture.asset(
                           'assets/images/Iconly-Bold-Message.svg',
-                          height: 20,
-                          width: 20,
+                          height: 25,
+                          width: 25,
                         ),
                         SizedBox(
                           width: 12,
@@ -152,7 +155,7 @@ class _ContactUs extends State<ContactUs> {
                       'tahry88585@gmail.com',
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 12,
+                        fontSize: 13,
                         fontWeight: FontWeight.w300,
                       ),
                     ),
@@ -186,7 +189,7 @@ class _ContactUs extends State<ContactUs> {
                       'Azadi St., intersection of Dr. Gharib, No. 134 Tehran, Iran',
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 12,
+                        fontSize: 13,
                         fontWeight: FontWeight.w300,
                       ),
                     ),
@@ -194,7 +197,7 @@ class _ContactUs extends State<ContactUs> {
                       height: 20,
                     ),
                     Spacer(),
-                    RoundedButtonBack(press: (){Navigator.of(context).pushNamed(Home.routeName);},),
+                    RoundedButtonBack(press: (){Navigator.of(context).pushNamedAndRemoveUntil(Home.routeName,(Route<dynamic> route) => false);},),
                     SizedBox(height: 10,),
 
                   ],

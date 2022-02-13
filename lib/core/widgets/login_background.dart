@@ -24,7 +24,7 @@ class Background extends StatelessWidget {
             children: [
               Spacer(),
               Container(
-                child: Image.asset('assets/images/background.png'),
+                child: Image.asset('assets/images/background.png',color: Colors.white.withOpacity(0.6), colorBlendMode: BlendMode.modulate,),
               ),
             ],
           ),

@@ -39,6 +39,7 @@ init();
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  
                   Image.asset(
                     'assets/images/dv.png',
                     height: 90,
@@ -94,7 +95,7 @@ init();
       if(token=='' || token==null)
         Navigator.of(context).pushNamed(Login.routeName);
       else
-        Navigator.of(context).pushNamed(Home.routeName);
+        Navigator.of(context).pushNamedAndRemoveUntil(Home.routeName,(Route<dynamic> route) => false);
 
     });
   }

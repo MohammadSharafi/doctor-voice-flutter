@@ -10,21 +10,42 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:aimedic/app/profile/viewModel/profile_view_model.dart';
 import 'package:aimedic/core/widgets/rounded_button.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:image_picker/image_picker.dart';
 
+import '../../../core/constants/app_colors.dart';
+import '../../../core/constants/loading.dart';
 import '../../home/globalCubit/global_cubit.dart';
 import '../model/profile_update_response.dart';
+
+typedef void OnPickImageCallback(
+    double? maxWidth, double? maxHeight, int? quality);
 
 class ProfileView extends ProfileViewModel {
   @override
   void initState() {
-    BlocProvider.of<GlobalCubit>(context).getTitle('Profile',2);
+    BlocProvider.of<GlobalCubit>(context).getTitle('Profile', 2);
 
     super.initState();
   }
+
   @override
   bool get wantKeepAlive => true;
   final TextEditingController controllerName = TextEditingController();
   final TextEditingController controllerCode = TextEditingController();
+
+  dynamic _pickImageError;
+  bool isVideo = false;
+
+  List<XFile>? _imageFileList;
+
+  set _imageFile(XFile? value) {
+    _imageFileList = value == null ? null : [value];
+  }
+
+  final ImagePicker _picker = ImagePicker();
+  final TextEditingController maxWidthController = TextEditingController();
+  final TextEditingController maxHeightController = TextEditingController();
+  final TextEditingController qualityController = TextEditingController();
 
   // ProfileService get homeViewModel => context.read<ProfileService>();
 
@@ -34,11 +55,19 @@ class ProfileView extends ProfileViewModel {
       builder: (context, state) {
         if (state is LoadingState) {
           return Center(
-            child: CircularProgressIndicator(),
+            child: Container(
+                color: AppColors.loadingBg,
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height,
+                child: Loading.loading),
           );
         } else if (state is ErrorState) {
           return Center(
-            child: CircularProgressIndicator(),
+            child: Container(
+                color: AppColors.loadingBg,
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height,
+                child: Loading.loading),
           );
         } else if (state is LoadedState) {
           final profile = state.profileModel;
@@ -57,8 +86,8 @@ class ProfileView extends ProfileViewModel {
                     Container(
                       width: double.maxFinite,
                       child: Container(
-                        height: 90,
-                        width: 90,
+                        height: 100,
+                        width: 100,
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
                             border: Border.all(
@@ -69,16 +98,16 @@ class ProfileView extends ProfileViewModel {
                         child: (state.profileModel.avatar ?? '').isEmpty
                             ? SvgPicture.asset(
                                 'assets/images/Iconly-Bold-Add User.svg',
-                                width: 40,
-                                height: 40,
+                                width: 30,
+                                height: 30,
                               )
                             : CircleAvatar(
                                 backgroundColor: Colors.white,
                                 child: ClipRect(
                                     child: Image.network(
                                   (state.profileModel.avatar)!,
-                                  height: 40,
-                                  width: 40,
+                                  height: 95,
+                                  width: 95,
                                 )),
                               ),
                       ),
@@ -89,51 +118,62 @@ class ProfileView extends ProfileViewModel {
                     Container(
                       width: double.maxFinite,
                       child: GestureDetector(
-                        onTap: (){
-                          try {
-                            FilePicker.platform
-                                .pickFiles(
-                              type: FileType.image,
-                            )
-                                .then((result) async {
-                              if (result != null &&
-                                  result.files.single.path != null) {
-                                final filePath = result.files.single.path;
-                                final path = File(filePath!);
-                                BlocProvider.of<AvatarCubit>(context)
-                                    .uploadAvatar(path);
-                              }
-                            });
-                          } catch (e) {}
+                        onTap: () async {
+                            try {
+                              final pickedFile = await _picker.pickImage(
+                                source: ImageSource.gallery,
+                                maxWidth: 80,
+                                maxHeight: 80,
+                                imageQuality: 25,
+                              );
+                              _imageFile = pickedFile;
+                              BlocProvider.of<AvatarCubit>(context).uploadAvatar(File(pickedFile!.path));
+
+                            } catch (e) {
+                              setState(() {
+                                print(e);
+                                _pickImageError = e;
+                              });
+                            }
                         },
-                        child:(_state is UpLoadLoadingState)
-                            ? CircularProgressIndicator()
+                        child: (_state is UpLoadLoadingState)
+                            ? Container(
+                                color: AppColors.loadingBg,
+                                width: MediaQuery.of(context).size.width,
+                                height: MediaQuery.of(context).size.height,
+                                child: Loading.loading)
                             : Center(
-                          child:(state.profileModel.avatar ?? '').isEmpty?
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  SvgPicture.asset('assets/images/Iconly-Bold-Edit.svg',width: 16,),
-                                  SizedBox(width: 4,),
-                                  Text(
-                                    'Change image',
-                                    style: TextStyle(
-                                      color: Colors.white70,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                ],
-                              )
-                              : Text(
-                            'Profile image',
-                            style: TextStyle(
-                              color: Colors.white70,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
+                                child: (state.profileModel.avatar ?? '').isEmpty
+                                    ? Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          SvgPicture.asset(
+                                            'assets/images/Iconly-Bold-Edit.svg',
+                                            width: 16,
+                                          ),
+                                          SizedBox(
+                                            width: 4,
+                                          ),
+                                          Text(
+                                            'Change image',
+                                            style: TextStyle(
+                                              color: Colors.white70,
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                        ],
+                                      )
+                                    : Text(
+                                        'Profile image',
+                                        style: TextStyle(
+                                          color: Colors.white70,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                              ),
                       ),
                     ),
                     SizedBox(
@@ -206,4 +246,5 @@ class ProfileView extends ProfileViewModel {
       },
     );
   }
+
 }

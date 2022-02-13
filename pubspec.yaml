@@ -52,6 +52,7 @@ dependencies:
   flutter_launcher_icons: ^0.9.2
   custom_navigator: ^0.3.0
   hexcolor: ^2.0.6
+  image_picker: ^0.8.4+8
 
 
 dev_dependencies:
@@ -77,6 +78,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/images/
+    - assets/lotti/lf30_1lbqqdlb.json
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see

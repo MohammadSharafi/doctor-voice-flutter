@@ -3,5 +3,5 @@ abstract class RecorderConstants {
 
   static const double decibleLimit = -30;
 
-  static const String fileExtention = '.mp3';
+  static const String fileExtention = '.m4a';
 }

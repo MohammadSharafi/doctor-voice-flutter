@@ -53,120 +53,131 @@ class _AppDrawerState extends State<AppDrawer>
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    controller.dispose();
+  }
+  @override
   Widget build(BuildContext context) {
     return SlideTransition(position: slideAnimation, child: drawerWidget());
   }
 
   Widget drawerWidget() {
-    return Column(
-      children: [
-        Container(
-          width: MediaQuery.of(context).size.width,
-          padding: EdgeInsets.symmetric(horizontal: 12),
-          color: AppColors.darkBG,
-          child: Column(
-            children: [
-              SizedBox(
-                height: 50,
-              ),
-              GestureDetector(
-                onTap: onContactUsTap,
-                child: Container(
-                  height:50 ,
-                  child: Row(
-                    children: [
-                      SvgPicture.asset(
-                        'assets/images/Iconly-Bold-Call.svg',
-                        height: 16,
-                      ),
-                      SizedBox(
-                        width: 12,
-                      ),
-                      Text(
-                        'Contact us',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w400,
-                          fontSize: 15,
+    return WillPopScope(
+      onWillPop: ()async {
+        controller.reverse();
+        return false;
+      },
+      child: Column(
+        children: [
+          Container(
+            width: MediaQuery.of(context).size.width,
+            padding: EdgeInsets.symmetric(horizontal: 12),
+            color: AppColors.darkBG,
+            child: Column(
+              children: [
+                SizedBox(
+                  height: 50,
+                ),
+                GestureDetector(
+                  onTap: onContactUsTap,
+                  child: Container(
+                    height:50 ,
+                    child: Row(
+                      children: [
+                        SvgPicture.asset(
+                          'assets/images/Iconly-Bold-Call.svg',
+                          height: 16,
                         ),
-                      ),
-                    ],
+                        SizedBox(
+                          width: 12,
+                        ),
+                        Text(
+                          'Contact us',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w400,
+                            fontSize: 15,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
 
-              Divider(
-                color: Colors.white.withOpacity(0.5),
-                thickness: 0.2,
-              ),
+                Divider(
+                  color: Colors.white.withOpacity(0.5),
+                  thickness: 0.2,
+                ),
 
-              GestureDetector(
-                onTap: onAboutUsTap,
-                child: Container(
-                  height: 50,
-                  child: Row(
-                    children: [
-                      SvgPicture.asset(
-                        'assets/images/Iconly-Bold-Info Square.svg',
-                        height: 16,
-                      ),
-                      SizedBox(
-                        width: 12,
-                      ),
-                      Text(
-                        'About us',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w400,
-                          fontSize: 15,
+                GestureDetector(
+                  onTap: onAboutUsTap,
+                  child: Container(
+                    height: 50,
+                    child: Row(
+                      children: [
+                        SvgPicture.asset(
+                          'assets/images/Iconly-Bold-Info Square.svg',
+                          height: 16,
                         ),
-                      ),
-                    ],
+                        SizedBox(
+                          width: 12,
+                        ),
+                        Text(
+                          'About us',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w400,
+                            fontSize: 15,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
 
-              Divider(
-                color: Colors.white.withOpacity(0.5),
-                thickness: 0.2,
-              ),
-              SizedBox(
-                height: 36,
-              ),
-              GestureDetector(
-                onTap: onSignUpTap,
-                child: Container(
-                  height: 50,
-                  child: Row(
-                    children: [
-                      SvgPicture.asset(
-                        'assets/images/Logout.svg',
-                        height: 16,
-                        color: AppColors.redStatus,
-                      ),
-                      SizedBox(
-                        width: 12,
-                      ),
-                      Text(
-                        'Sign out',
-                        style: TextStyle(
+                Divider(
+                  color: Colors.white.withOpacity(0.5),
+                  thickness: 0.2,
+                ),
+                SizedBox(
+                  height: 36,
+                ),
+                GestureDetector(
+                  onTap: onSignUpTap,
+                  child: Container(
+                    height: 50,
+                    child: Row(
+                      children: [
+                        SvgPicture.asset(
+                          'assets/images/Logout.svg',
+                          height: 16,
                           color: AppColors.redStatus,
-                          fontWeight: FontWeight.w400,
-                          fontSize: 15,
                         ),
-                      ),
-                    ],
+                        SizedBox(
+                          width: 12,
+                        ),
+                        Text(
+                          'Sign out',
+                          style: TextStyle(
+                            color: AppColors.redStatus,
+                            fontWeight: FontWeight.w400,
+                            fontSize: 15,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-            ],
+                SizedBox(
+                  height: 10,
+                ),
+              ],
+            ),
           ),
-        ),
-        Spacer(),
-      ],
+          Spacer(),
+        ],
+      ),
     );
   }
 }

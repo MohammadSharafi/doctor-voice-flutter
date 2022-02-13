@@ -14,7 +14,7 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       backgroundColor: AppColors.darkBG,
       centerTitle: true,
-      elevation: 4,
+      elevation: 2,
       shadowColor: Colors.black,
       toolbarHeight: 54,
 

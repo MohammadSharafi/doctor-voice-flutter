@@ -7,6 +7,8 @@ import 'package:aimedic/core/widgets/home_page_widgets.dart/TaskWidget.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
+import '../../../core/constants/app_colors.dart';
+import '../../../core/constants/loading.dart';
 import '../../home/globalCubit/global_cubit.dart';
 
 class TitlePagesView extends TitlePagesViewModel {
@@ -30,11 +32,19 @@ class TitlePagesView extends TitlePagesViewModel {
       builder: (context, state) {
         if (state is LoadingState) {
           return Center(
-            child: CircularProgressIndicator(),
+            child: Container(
+                color: AppColors.loadingBg,
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height,
+                child: Loading.loading),
           );
         } else if (state is ErrorState) {
           return Center(
-            child: CircularProgressIndicator(),
+            child: Container(
+                color: AppColors.loadingBg,
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height,
+                child: Loading.loading),
           );
         } else if (state is LoadedState) {
           final texts = state.titleList;

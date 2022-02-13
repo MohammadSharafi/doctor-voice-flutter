@@ -33,7 +33,9 @@ class _AboutUs extends State<AboutUs> {
                 CacheManager().saveToken('');
                 CacheManager().saveRefreshToken('');
                 CacheManager().saveOTPToken('');
-                Navigator.of(context).pushNamed(Login.routeName);
+                Navigator.of(context).pushNamedAndRemoveUntil(Login.routeName,(Route<dynamic> route) => false);
+                CacheManager().deleteCacheDir();
+                CacheManager().deleteAppDir();
               },
               onAboutUsTap: () {},
               onContactUsTap: () {
@@ -51,15 +53,15 @@ class _AboutUs extends State<AboutUs> {
                 child: Column(
                   children: [
                     SizedBox(
-                      height: 20,
+                      height: 30,
                     ),
                     Row(
                       children: [
 
                         Image.asset(
                           'assets/images/dv.png',
-                          height: 20,
-                          width: 20,
+                          height: 30,
+                          width: 30,
                         ),
                         SizedBox(
                           width: 12,
@@ -68,7 +70,7 @@ class _AboutUs extends State<AboutUs> {
                           'Doctor Voice',
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 14,
+                            fontSize: 15,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
@@ -85,10 +87,11 @@ class _AboutUs extends State<AboutUs> {
                         color: Colors.white,
                         fontSize: 14,
                         fontWeight: FontWeight.w300,
+                        height: 2,
                       ),
                     ),
                     Spacer(),
-                    RoundedButtonBack(press: (){Navigator.of(context).pushNamed(Home.routeName);},),
+                    RoundedButtonBack(press: (){Navigator.of(context).pushNamedAndRemoveUntil(Home.routeName,(Route<dynamic> route) => false);},),
                     SizedBox(
                       height: 10,
                     ),

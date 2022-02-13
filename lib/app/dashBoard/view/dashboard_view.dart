@@ -6,6 +6,7 @@ import 'package:flutter/widgets.dart';
 import 'package:aimedic/app/dashBoard/viewModel/dashboard_view_model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../core/constants/loading.dart';
 import '../../../core/widgets/login_background.dart';
 import '../../home/globalCubit/global_cubit.dart';
 
@@ -31,7 +32,7 @@ class DashBoardView extends DashBoardViewModel {
     return BlocBuilder<DashBoardCubit, DashBoardState>(
       builder: (context, state) {
         if (state is LoadingState) {
-          return Center(child: CircularProgressIndicator());
+          return Center(child: Loading.loading);
         } else if (state is LoadedState) {
          final dashModel= state.response;
           return Container(

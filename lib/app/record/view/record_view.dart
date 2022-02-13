@@ -19,6 +19,9 @@ import 'package:just_audio/just_audio.dart';
 
 import 'package:toggle_switch/toggle_switch.dart';
 
+import '../../../core/constants/loading.dart';
+import '../../home/globalCubit/global_cubit.dart';
+
 class RecordView extends RecordViewModel {
   final EdgeInsets paddingLow = EdgeInsets.all(8.0);
   bool _isLocked = false;
@@ -43,8 +46,7 @@ class RecordView extends RecordViewModel {
       setState(() {
         _isCollapsed = true;
         _isExpanded = false;
-         controller.stop();
-
+        controller.stop();
       });
     } else if (_bsbController.isExpanded && !_isExpanded) {
       setState(() {
@@ -56,221 +58,269 @@ class RecordView extends RecordViewModel {
 
   @override
   void initState() {
+    BlocProvider.of<GlobalCubit>(context).getTitle('Record', 1);
     _bsbController.addListener(_onBsbChanged);
     super.initState();
   }
 
   final AudioPlayerController controller = AudioPlayerController();
+  bool is_record = false;
 
   @override
   Widget build(BuildContext context) {
     //final args = ModalRoute.of(context)!.settings.arguments as ScreenArguments;
     return BlocBuilder<VoiceUploadCubit, VoiceUploadState>(
-  builder: (context, _state) {
-    if( _state is LoadingState){
-
-    }
-      return  BlocBuilder<RecordCubit, RecordState>(
-        builder: (context, state) {
-          return Background(
-            child: Form(
-              key: _formKey,
-              autovalidateMode: AutovalidateMode.onUserInteraction,
-              child: BottomSheetBar(
-                locked: _isLocked,
-                height: 100,
-                color: Colors.transparent,
-                controller: _bsbController,
-                expandedBuilder: (scrollController) {
-                  return Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.only(
-                            topRight: Radius.circular(18),
-                            topLeft: Radius.circular(18)),
-                        color: Colors.black,
-                      ),
-                      height: 200,
-                      width: MediaQuery.of(context).size.width,
-                      child: Container(
-                        child: Column(
-                          children: [
-                            playingIndicator(),
-                            Spacer(),
-                            Stack(
-                              children: [
-                                Positioned(
-                                  child: SvgPicture.asset(
-                                    'assets/images/send.svg',
-                                    color: Colors.white,
-                                    height: 28,
-                                  ),
-                                  right: 30,
-                                  top: 0,
-                                  bottom: 0,
-                                ),
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    NeumorphicMic(onTap: () {
-                                      if (state is RecordStopped ||
-                                          state is RecordInitial)
-                                        context
-                                            .read<RecordCubit>()
-                                            .startRecording();
-                                      else if (state is RecordOn) {
-                                        context
-                                            .read<RecordCubit>()
-                                            .stopRecording()
-                                            .then((value) => {audPath = value});
-                                      }
-                                    }),
-                                  ],
-                                ),
-                                Positioned(
-                                  child: GestureDetector(
-                                      onTap: () {
-                                        setState(() {
-                                          _isCollapsed = false;
-                                          _isExpanded = true;
-                                          _bsbController.expand();
-                                        });
-                                      },
-                                      child: SvgPicture.asset(
-                                        'assets/images/Polygon 5.svg',
-                                        color: audPath == ''
-                                            ? Colors.grey
-                                            : Colors.white,
-                                        height: 28,
-                                      )),
-                                  left: 30,
-                                  top: 0,
-                                  bottom: 0,
-                                ),
-                              ],
+      builder: (context, _state) {
+        return BlocBuilder<RecordCubit, RecordState>(
+          builder: (context, state) {
+            return Stack(
+              children: [
+                Background(
+                  child: Form(
+                    key: _formKey,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    child: BottomSheetBar(
+                      locked: _isLocked,
+                      height: 100,
+                      color: Colors.transparent,
+                      controller: _bsbController,
+                      expandedBuilder: (scrollController) {
+                        return Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.only(
+                                  topRight: Radius.circular(18),
+                                  topLeft: Radius.circular(18)),
+                              color: Colors.black,
                             ),
-                            SizedBox(height: 20,),
-                          ],
+                            height: 200,
+                            width: MediaQuery.of(context).size.width,
+                            child: Container(
+                              child: Column(
+                                children: [
+                                  playingIndicator(),
+                                  Spacer(),
+                                  Stack(
+                                    children: [
+                                      Positioned(
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            if (audPath != '')
+                                              BlocProvider.of<VoiceUploadCubit>(
+                                                  context)
+                                                  .VoiceUpload(
+                                                  File(audPath), args.id);
+                                          },
+                                          child: SvgPicture.asset(
+                                            'assets/images/send.svg',
+                                            color: Colors.white,
+                                            height: 28,
+                                          ),
+                                        ),
+                                        right: 30,
+                                        top: 0,
+                                        bottom: 0,
+                                      ),
+                                      Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          NeumorphicMic(onTap: () {
+                                              is_record = true;
+                                              if (state is RecordStopped ||
+                                                  state is RecordInitial) {
+                                                if (!is_record) {
+                                                  is_record = true;
+                                                }
+                                                context
+                                                    .read<RecordCubit>()
+                                                    .startRecording();
+                                              }
+                                              else if (state is RecordOn) {
+                                                context
+                                                    .read<RecordCubit>()
+                                                    .stopRecording()
+                                                    .then((value) =>
+                                                        {audPath = value});
+                                            }
+                                          }),
+                                        ],
+                                      ),
+                                      Positioned(
+                                        child: GestureDetector(
+                                            onTap: () {
+                                              setState(() {
+                                                _isCollapsed = false;
+                                                _isExpanded = true;
+                                                _bsbController.expand();
+                                              });
+                                            },
+                                            child: SvgPicture.asset(
+                                              'assets/images/Polygon 5.svg',
+                                              color: audPath == ''
+                                                  ? Colors.grey
+                                                  : Colors.white,
+                                              height: 28,
+                                            )),
+                                        left: 30,
+                                        top: 0,
+                                        bottom: 0,
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 20,
+                                  ),
+                                ],
+                              ),
+                            ));
+                      },
+                      collapsed: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.only(
+                              topRight: Radius.circular(18),
+                              topLeft: Radius.circular(18)),
+                          color: Colors.black,
                         ),
-                      ));
-                },
-                collapsed: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                        topRight: Radius.circular(18),
-                        topLeft: Radius.circular(18)),
-                    color: Colors.black,
-                  ),
-                  child: SizedBox(
-                    height: 200,
-                    child: Column(
-                      children: [
-                        Spacer(),
-                        Stack(
-                          children: [
-                            Positioned(
-                              child: GestureDetector(
-                                onTap: (){
-                                  if(audPath != '')
-                                  BlocProvider.of<VoiceUploadCubit>(context).VoiceUpload(File(audPath),args.id);
-                                },
-                                child:(_state is LoadingState) ? Container(child: CircularProgressIndicator()) :SvgPicture.asset(
-                                  'assets/images/send.svg',
-                                  color: audPath == '' ? Colors.grey : Colors.white,
-                                  height: 28,
+                        child: SizedBox(
+                          height: 200,
+                          child: Column(
+                            children: [
+                              Spacer(),
+                              Stack(
+                                children: [
+                                  Positioned(
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        if (audPath != '')
+                                          BlocProvider.of<VoiceUploadCubit>(
+                                                  context)
+                                              .VoiceUpload(
+                                                  File(audPath), args.id);
+                                      },
+                                      child:SvgPicture.asset(
+                                              'assets/images/send.svg',
+                                              color: audPath == ''
+                                                  ? Colors.grey
+                                                  : Colors.white,
+                                              height: 28,
+                                            ),
+                                    ),
+                                    right: 30,
+                                    top: 0,
+                                    bottom: 0,
+                                  ),
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      NeumorphicMic(onTap: () {
+                                        print(
+                                            'path ================>' + audPath);
+
+
+                                          if (state is RecordStopped || state is RecordInitial) {
+                                            if (!is_record) {
+                                            is_record = true;
+                                            }
+                                            context
+                                                .read<RecordCubit>()
+                                                .startRecording();
+                                          }
+                                          else if (state is RecordOn) {
+                                            context
+                                                .read<RecordCubit>()
+                                                .stopRecording()
+                                                .then((value) =>
+                                                    {audPath = value});
+                                        }
+                                      }),
+                                    ],
+                                  ),
+                                  Positioned(
+                                    child: GestureDetector(
+                                        onTap: () async {
+                                          print('play path ================>' +
+                                              audPath);
+
+                                          if (audPath != '') {
+                                            setState(() {
+                                              _isCollapsed = false;
+                                              _isExpanded = true;
+                                              _bsbController.expand();
+                                            });
+                                            await controller.stop();
+                                            await controller.setPath(
+                                                filePath: audPath);
+                                            await controller.play();
+                                            await controller.stop();
+                                          }
+                                        },
+                                        child: SvgPicture.asset(
+                                          'assets/images/Polygon 5.svg',
+                                          color: audPath == ''
+                                              ? Colors.grey
+                                              : Colors.white,
+                                          height: 28,
+                                        )),
+                                    left: 30,
+                                    top: 0,
+                                    bottom: 0,
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      body: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              "Text ${args.index}",
+                              style: GoogleFonts.yantramanav(
+                                textStyle: TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
-                              right: 30,
-                              top: 0,
-                              bottom: 0,
                             ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                NeumorphicMic(onTap: () {
-                                  if (state is RecordStopped ||
-                                      state is RecordInitial)
-                                    context.read<RecordCubit>().startRecording();
-                                  else if (state is RecordOn) {
-                                    context
-                                        .read<RecordCubit>()
-                                        .stopRecording()
-                                        .then((value) => {audPath = value});
-                                  }
-                                }),
-                              ],
-                            ),
-                            Positioned(
-                              child: GestureDetector(
-                                  onTap: () async {
-                                    if(audPath!='') {
-                                      setState(() {
-                                        _isCollapsed = false;
-                                        _isExpanded = true;
-                                        _bsbController.expand();
-                                      });
-                                      await controller.stop();
-                                      await controller.setPath(
-                                          filePath: audPath);
-                                      await controller.play();
-                                      await controller.stop();
-                                    }
-                                  },
-                                  child: SvgPicture.asset(
-                                    'assets/images/Polygon 5.svg',
-                                    color:
-                                        audPath == '' ? Colors.grey : Colors.white,
-                                    height: 28,
-                                  )),
-                              left: 30,
-                              top: 0,
-                              bottom: 0,
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                args.title,
+                                style: GoogleFonts.yantramanav(
+                                  textStyle: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                              ),
                             ),
                           ],
                         ),
-                        SizedBox(height: 20,),
-                      ],
+                      ),
                     ),
                   ),
                 ),
-                body: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
-
-                      Text(
-                        "Text ${args.index}",
-                        style: GoogleFonts.yantramanav(
-                          textStyle: TextStyle(
-                            fontSize: 20,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          args.title,
-                          style: GoogleFonts.yantramanav(
-                            textStyle: TextStyle(
-                              fontSize: 16,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w400,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          );
-        },
-      );
-  },
-);
+                (_state is LoadingState)
+                    ? Container(
+                    color: AppColors.loadingBg,
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height,
+                    child: Loading.loading)
+                    : Container(),
+              ],
+            );
+          },
+        );
+      },
+    );
   }
 
   Widget playingIndicator() {
@@ -299,5 +349,4 @@ class RecordView extends RecordViewModel {
       ),
     );
   }
-
 }

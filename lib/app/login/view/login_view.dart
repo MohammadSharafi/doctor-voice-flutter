@@ -1,8 +1,6 @@
-import 'dart:async';
-
 import 'package:aimedic/app/login/cubit/login_cubit.dart';
 import 'package:aimedic/app/login/viewModel/login_view_model.dart';
-import 'package:aimedic/core/widgets/rounded_button_loading.dart';
+import 'package:aimedic/core/constants/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,6 +9,7 @@ import 'package:aimedic/core/widgets/login_background.dart';
 import 'package:aimedic/core/widgets/rounded_button.dart';
 import 'package:aimedic/core/widgets/rounded_input.dart';
 import 'package:hexcolor/hexcolor.dart';
+import '../../../core/constants/loading.dart';
 
 enum LoginBtnState { Loeded, Loading, InitState, Error }
 
@@ -19,6 +18,7 @@ class LoginView extends LoginViewModel {
 
   final GlobalKey<FormState> _formKey = GlobalKey();
   final TextEditingController controllerPhone = TextEditingController();
+  bool isVisible = false;
 
   @override
   Widget build(BuildContext context) {
@@ -113,7 +113,15 @@ class LoginView extends LoginViewModel {
                             keyboardType: TextInputType.phone,
                             onChanged: (String value) {
                               if (value.length == 11 &&
-                                  value.substring(0, 2).contains('09')) {}
+                                  value.substring(0, 2).contains('09')) {
+                                setState(() {
+                                  isVisible = true;
+                                });
+                              } else {
+                                setState(() {
+                                  isVisible = false;
+                                });
+                              }
                             },
                             controller: controllerPhone,
                           ),
@@ -121,11 +129,17 @@ class LoginView extends LoginViewModel {
                             height: 30,
                           ),
                           RoundedButton(
+                            color: isVisible
+                                ? AppColors.primaryLightBlue
+                                : AppColors.primaryDarkBlue,
                             text: "Login",
                             press: () {
-                              if (_formKey.currentState?.validate() ?? false) {
-                                BlocProvider.of<LoginCubit>(context)
-                                    .login(controllerPhone.text);
+                              if (isVisible) {
+                                if (_formKey.currentState?.validate() ??
+                                    false) {
+                                  BlocProvider.of<LoginCubit>(context)
+                                      .login(controllerPhone.text);
+                                }
                               }
                             },
                           ),
@@ -138,11 +152,12 @@ class LoginView extends LoginViewModel {
               ),
               (state is LoadingState)
                   ? Center(
-                    child: SizedBox(
-                        width: 30,
-                        height: 30,
-                        child: CircularProgressIndicator()),
-                  )
+                      child: Container(
+                          color: AppColors.loadingBg,
+                          width: MediaQuery.of(context).size.width,
+                          height: MediaQuery.of(context).size.height,
+                          child: Loading.loading),
+                    )
                   : Container(),
             ],
           ),

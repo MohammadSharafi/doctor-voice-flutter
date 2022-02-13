@@ -43,7 +43,9 @@ class HomeView extends HomeViewModel {
                 CacheManager().saveToken('');
                 CacheManager().saveRefreshToken('');
                 CacheManager().saveOTPToken('');
-                Navigator.of(context).pushNamed(Login.routeName);
+                Navigator.of(context).pushNamedAndRemoveUntil(Login.routeName,(Route<dynamic> route) => false);
+                CacheManager().deleteCacheDir();
+                CacheManager().deleteAppDir();
               },
               onAboutUsTap: () {
                 Navigator.of(context).pushNamed(AboutUs.routeName);

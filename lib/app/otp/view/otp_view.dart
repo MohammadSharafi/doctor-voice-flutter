@@ -14,15 +14,18 @@ import 'package:aimedic/app/otp/viewModel/otp_view_model.dart';
 import 'package:aimedic/core/widgets/login_background.dart';
 import 'package:aimedic/core/widgets/rounded_button.dart';
 
+import '../../../core/constants/app_colors.dart';
+import '../../../core/constants/loading.dart';
 import '../cubit/otp_cubit.dart';
 
 class OTPView extends OTPViewModel {
   final EdgeInsets paddingLow = EdgeInsets.all(8.0);
   late CountdownTimerController controllerCountdownTimer;
-  int endTime = DateTime.now().millisecondsSinceEpoch + 1000 * 10;
+  int endTime = DateTime.now().millisecondsSinceEpoch + 1000 * 180;
   final GlobalKey<FormState> _formKey = GlobalKey();
   TextEditingController textEditingController = TextEditingController();
    bool timeFinish=false;
+   bool isVisible = false;
   // ignore: close_sinks
   late StreamController<ErrorAnimationType> errorController;
 
@@ -182,10 +185,20 @@ class OTPView extends OTPViewModel {
                                   onCompleted: (v) {
                                     print("Completed");
                                   },
-                                  // onTap: () {
-                                  //   print("Pressed");
-                                  // },
-                                  onChanged: (value) {},
+                                  onChanged: (value) {
+                                   if(value.length==4)
+                                     {
+                                       setState(() {
+                                         isVisible=true;
+                                       });
+                                     }
+                                   else{
+                                     setState(() {
+                                       isVisible=false;
+                                     });
+                                   }
+
+                                  },
                                   beforeTextPaste: (text) {
                                     print("Allowing to paste $text");
                                     //if you return true then it will show the paste confirmation dialog. Otherwise if false, then nothing will happen.
@@ -269,8 +282,10 @@ class OTPView extends OTPViewModel {
                             press: () async {
                               final otpToken = await getOTPToken();
 
-                              BlocProvider.of<OTPCubit>(context)
-                                  .OTP(textEditingController.text, otpToken);
+                              if(isVisible) {
+                                BlocProvider.of<OTPCubit>(context)
+                                    .OTP(textEditingController.text, otpToken);
+                              }
                             },
                           ),
                           SizedBox(height: size.height * 0.03),
@@ -282,10 +297,11 @@ class OTPView extends OTPViewModel {
               ),
               (state is LoadingState)
             ?Center(
-                child: SizedBox(
-                    width: 30,
-                    height: 30,
-                    child: CircularProgressIndicator()),
+                child: Container(
+                      color: AppColors.loadingBg,
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height,
+                      child: Loading.loading),
               )
             :Container(),
             ],
@@ -300,7 +316,7 @@ class OTPView extends OTPViewModel {
   }
 
   void navigateToHome() {
-    Navigator.of(context).pushNamed(Home.routeName);
+    Navigator.of(context).pushNamedAndRemoveUntil(Home.routeName,(Route<dynamic> route) => false);
   }
 
   void navigateToLogin() {

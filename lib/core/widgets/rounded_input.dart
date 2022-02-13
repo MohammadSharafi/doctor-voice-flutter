@@ -51,7 +51,7 @@ class RoundedInputField extends StatelessWidget {
                 border: InputBorder.none,
               ),
               controller: controller,
-              onChanged: (value) {},
+              onChanged: (value)=>onChanged(value),
               cursorColor: AppColors.primaryLightBlue,
               style: TextStyle(
                 color: Colors.white,
