@@ -39,9 +39,11 @@ class _ContactUs extends State<ContactUs> {
                 CacheManager().deleteAppDir();
               },
               onContactUsTap: () {
+                Navigator.of(context).pushNamed(ContactUs.routeName);
+              },
+              onAboutUsTap: () {
                 Navigator.of(context).pushNamed(AboutUs.routeName);
               },
-              onAboutUsTap: () {},
             ),
             backgroundColor: AppColors.darkBG,
             appBar: AppBarWidget(
@@ -50,7 +52,7 @@ class _ContactUs extends State<ContactUs> {
             ),
             body: Background(
               child: Container(
-                margin: EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+                margin: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -58,24 +60,24 @@ class _ContactUs extends State<ContactUs> {
                       children: [
                         Image.asset(
                           'assets/images/dv.png',
-                          height: 30,
-                          width: 30,
+                          height: 28,
+                          width: 28,
                         ),
                         SizedBox(
-                          width: 12,
+                          width: 10,
                         ),
                         Text(
                           'Doctor Voice',
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 14,
+                            fontSize: 15,
                             fontWeight: FontWeight.w400,
                           ),
                         ),
                       ],
                     ),
                     SizedBox(
-                      height: 10,
+                      height: 8,
                     ),
                     Text(
                       "AImedic is a start-up studio, aiming to offer AI products in the healthcare industry. Also, training competent data scientists is a part of our mission.\n"+
@@ -83,7 +85,7 @@ class _ContactUs extends State<ContactUs> {
                       "With a belief in “Intelligence brings hope“, AImedic is going to bring hope with data-driven solutions",
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 13,
+                        fontSize: 12,
                         fontWeight: FontWeight.w300,
                         height: 2
                       ),
@@ -91,30 +93,29 @@ class _ContactUs extends State<ContactUs> {
 
 
                     SizedBox(
-                      height: 20,
+                      height: 15,
                     ),
                     Row(
                       children: [
                         SvgPicture.asset(
                           'assets/images/Iconly-Bold-Call.svg',
-                          height: 25,
-                          width: 25,
+                          width: 22,
                         ),
                         SizedBox(
-                          width: 12,
+                          width: 10,
                         ),
                         Text(
                           'Supporter',
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 14,
+                            fontSize: 15,
                             fontWeight: FontWeight.w400,
                           ),
                         ),
                       ],
                     ),
                     SizedBox(
-                      height: 10,
+                      height: 8,
                     ),
                     Text(
                       '021-65659005 / 021-65659005',
@@ -126,23 +127,22 @@ class _ContactUs extends State<ContactUs> {
                       textAlign: TextAlign.left,
                     ),
                     SizedBox(
-                      height: 20,
+                      height: 15,
                     ),
                     Row(
                       children: [
                         SvgPicture.asset(
                           'assets/images/Iconly-Bold-Message.svg',
-                          height: 25,
-                          width: 25,
+                          width: 22,
                         ),
                         SizedBox(
-                          width: 12,
+                          width: 10,
                         ),
                         Text(
                           'Email',
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 14,
+                            fontSize: 15,
                             fontWeight: FontWeight.w400,
                           ),
                         ),
@@ -160,30 +160,29 @@ class _ContactUs extends State<ContactUs> {
                       ),
                     ),
                     SizedBox(
-                      height: 20,
+                      height: 15,
                     ),
                     Row(
                       children: [
                         SvgPicture.asset(
                           'assets/images/Iconly-Bold-Location.svg',
-                          height: 20,
                           width: 20,
                         ),
                         SizedBox(
-                          width: 12,
+                          width: 10,
                         ),
                         Text(
                           'Address',
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 14,
+                            fontSize: 15,
                             fontWeight: FontWeight.w400,
                           ),
                         ),
                       ],
                     ),
                     SizedBox(
-                      height: 10,
+                      height: 8,
                     ),
                     Text(
                       'Azadi St., intersection of Dr. Gharib, No. 134 Tehran, Iran',
@@ -194,11 +193,11 @@ class _ContactUs extends State<ContactUs> {
                       ),
                     ),
                     SizedBox(
-                      height: 20,
+                      height: 15,
                     ),
                     Spacer(),
                     RoundedButtonBack(press: (){Navigator.of(context).pushNamedAndRemoveUntil(Home.routeName,(Route<dynamic> route) => false);},),
-                    SizedBox(height: 10,),
+                    SizedBox(height: 8,),
 
                   ],
                 ),

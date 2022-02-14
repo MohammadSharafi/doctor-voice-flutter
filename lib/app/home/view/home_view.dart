@@ -70,11 +70,12 @@ class HomeView extends HomeViewModel {
             bottomNavigationBar: BottomNavigationBar(
               backgroundColor: AppColors.darkBG.withOpacity(0.5),
               type: BottomNavigationBarType.fixed,
-              elevation: 5,
+              elevation: 8,
               onTap: (index){
                 navigatorKey.currentState!.maybePop();
                 setState(() => _page = _children[index]);
                 setState(() => _currentIndex = index);
+
 
               },
               currentIndex: (state is GlobalLoadedState) ? state.index : 1,
@@ -82,19 +83,34 @@ class HomeView extends HomeViewModel {
               showUnselectedLabels: false,
               items: [
                 BottomNavigationBarItem(
-                    icon: SvgPicture.asset(((state is GlobalLoadedState) ? state.index : 1) == 0 ? 'assets/images/Iconly-Bold-Category.svg' : 'assets/images/Category.svg', width: 20,height: 20,),
+                    icon: SvgPicture.asset(((state is GlobalLoadedState) ? state.index : 1) == 0 ? 'assets/images/Iconly-Bold-Category.svg' : 'assets/images/Category.svg', width: 28,height: 28,),
                 label: ''),
                 BottomNavigationBarItem(
-                    icon: SvgPicture.asset(((state is GlobalLoadedState) ? state.index : 1) == 1 ? 'assets/images/Iconly-Bold-Home.svg' : 'assets/images/Iconly-Light-outline-Home.svg', width: 20,height: 20,),
+                    icon: SvgPicture.asset(((state is GlobalLoadedState) ? state.index : 1) == 1 ? 'assets/images/Iconly-Bold-Home.svg' : 'assets/images/Iconly-Light-outline-Home.svg', width: 28,height: 28,),
                     label: ''),
                 BottomNavigationBarItem(
-                    icon: SvgPicture.asset(((state is GlobalLoadedState) ? state.index : 1) == 2 ? 'assets/images/Iconly-Light-outline-Profile.svg' : 'assets/images/Iconly-Light-outline-Profile.svg', width: 20,height: 20,),
+                    icon: SvgPicture.asset(((state is GlobalLoadedState) ? state.index : 1) == 2 ? 'assets/images/Iconly-Light-outline-Profile.svg' : 'assets/images/Iconly-Light-outline-Profile.svg', width: 28,height: 28,),
                     label: ''),
             ],),
 
           ),
           children: _children,
-          onItemTap: (index){},
+          onItemTap: (index){
+
+            switch(index)
+            {
+              case 0:
+                BlocProvider.of<GlobalCubit>(context).getTitle('Dashboard',0);
+                break;
+              case 1:
+                BlocProvider.of<GlobalCubit>(context).getTitle('Text List',1);
+                break;
+              case 2:
+                BlocProvider.of<GlobalCubit>(context).getTitle('Profile',2);
+                break;
+
+            }
+          },
         );
       },
     );

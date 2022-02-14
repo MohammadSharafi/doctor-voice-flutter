@@ -12,21 +12,22 @@ class OTPCubit extends Cubit<OTPState> {
   final OTPService repository;
 
   OTPCubit({required this.repository,}) : super(InitialState());
-  void OTP(String ? code,String ? otp_token) {
-    try{
-    emit(LoadingState());
-    Timer(Duration(seconds: 1), ()  {
-       repository.getOTP(OTPRequestModel(otp_token:otp_token ,code:code )).then((response) {
-        emit(LoadedState(response!));
+  Future<void> OTP(String ? code,String ? otp_token) async {
+    try {
+      emit(LoadingState());
 
-      });
-    });
+       var response = await  repository.getOTP(OTPRequestModel(otp_token:otp_token ,code:code )).timeout(const Duration(seconds: 12));
+       emit(LoadedState(response!));
 
-    }
-    catch(e){
+    } on TimeoutException catch (e) {
       emit(ErrorState());
-
+    } on Error catch (e) {
+      emit(ErrorState());
     }
+
+
+
+
 
 
   }

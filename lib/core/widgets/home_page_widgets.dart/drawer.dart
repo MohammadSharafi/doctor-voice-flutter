@@ -79,10 +79,11 @@ class _AppDrawerState extends State<AppDrawer>
                 SizedBox(
                   height: 50,
                 ),
-                GestureDetector(
+                InkWell(
                   onTap: onContactUsTap,
                   child: Container(
                     height:50 ,
+                    width: MediaQuery.of(context).size.width,
                     child: Row(
                       children: [
                         SvgPicture.asset(
@@ -110,10 +111,11 @@ class _AppDrawerState extends State<AppDrawer>
                   thickness: 0.2,
                 ),
 
-                GestureDetector(
+                InkWell(
                   onTap: onAboutUsTap,
                   child: Container(
                     height: 50,
+                    width: MediaQuery.of(context).size.width,
                     child: Row(
                       children: [
                         SvgPicture.asset(
@@ -140,13 +142,16 @@ class _AppDrawerState extends State<AppDrawer>
                   color: Colors.white.withOpacity(0.5),
                   thickness: 0.2,
                 ),
+
                 SizedBox(
                   height: 36,
                 ),
-                GestureDetector(
+
+                InkWell(
                   onTap: onSignUpTap,
                   child: Container(
                     height: 50,
+                    width: MediaQuery.of(context).size.width,
                     child: Row(
                       children: [
                         SvgPicture.asset(
@@ -169,6 +174,7 @@ class _AppDrawerState extends State<AppDrawer>
                     ),
                   ),
                 ),
+
                 SizedBox(
                   height: 10,
                 ),

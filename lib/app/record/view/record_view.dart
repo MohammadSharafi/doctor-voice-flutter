@@ -106,9 +106,9 @@ class RecordView extends RecordViewModel {
                                           onTap: () {
                                             if (audPath != '')
                                               BlocProvider.of<VoiceUploadCubit>(
-                                                  context)
+                                                      context)
                                                   .VoiceUpload(
-                                                  File(audPath), args.id);
+                                                      File(audPath), args.id);
                                           },
                                           child: SvgPicture.asset(
                                             'assets/images/send.svg',
@@ -125,22 +125,20 @@ class RecordView extends RecordViewModel {
                                             MainAxisAlignment.center,
                                         children: [
                                           NeumorphicMic(onTap: () {
-                                              is_record = true;
-                                              if (state is RecordStopped ||
-                                                  state is RecordInitial) {
-                                                if (!is_record) {
-                                                  is_record = true;
-                                                }
+                                            if (state is RecordStopped ||
+                                                state is RecordInitial) {
+                                              if (!is_record) {
+                                                is_record = true;
                                                 context
                                                     .read<RecordCubit>()
                                                     .startRecording();
                                               }
-                                              else if (state is RecordOn) {
-                                                context
-                                                    .read<RecordCubit>()
-                                                    .stopRecording()
-                                                    .then((value) =>
-                                                        {audPath = value});
+                                            } else if (state is RecordOn) {
+                                              context
+                                                  .read<RecordCubit>()
+                                                  .stopRecording()
+                                                  .then((value) =>
+                                                      {audPath = value});
                                             }
                                           }),
                                         ],
@@ -154,13 +152,7 @@ class RecordView extends RecordViewModel {
                                                 _bsbController.expand();
                                               });
                                             },
-                                            child: SvgPicture.asset(
-                                              'assets/images/Polygon 5.svg',
-                                              color: audPath == ''
-                                                  ? Colors.grey
-                                                  : Colors.white,
-                                              height: 28,
-                                            )),
+                                            child: playingIcon()),
                                         left: 30,
                                         top: 0,
                                         bottom: 0,
@@ -197,13 +189,13 @@ class RecordView extends RecordViewModel {
                                               .VoiceUpload(
                                                   File(audPath), args.id);
                                       },
-                                      child:SvgPicture.asset(
-                                              'assets/images/send.svg',
-                                              color: audPath == ''
-                                                  ? Colors.grey
-                                                  : Colors.white,
-                                              height: 28,
-                                            ),
+                                      child: SvgPicture.asset(
+                                        'assets/images/send.svg',
+                                        color: audPath == ''
+                                            ? Colors.grey
+                                            : Colors.white,
+                                        height: 28,
+                                      ),
                                     ),
                                     right: 30,
                                     top: 0,
@@ -216,51 +208,42 @@ class RecordView extends RecordViewModel {
                                         print(
                                             'path ================>' + audPath);
 
-
-                                          if (state is RecordStopped || state is RecordInitial) {
-                                            if (!is_record) {
+                                        if (state is RecordStopped ||
+                                            state is RecordInitial) {
+                                          if (!is_record) {
                                             is_record = true;
-                                            }
                                             context
                                                 .read<RecordCubit>()
                                                 .startRecording();
                                           }
-                                          else if (state is RecordOn) {
-                                            context
-                                                .read<RecordCubit>()
-                                                .stopRecording()
-                                                .then((value) =>
-                                                    {audPath = value});
+                                        } else if (state is RecordOn) {
+                                          context
+                                              .read<RecordCubit>()
+                                              .stopRecording()
+                                              .then(
+                                                  (value) => {audPath = value});
                                         }
                                       }),
                                     ],
                                   ),
                                   Positioned(
                                     child: GestureDetector(
-                                        onTap: () async {
-                                          print('play path ================>' +
-                                              audPath);
-
-                                          if (audPath != '') {
-                                            setState(() {
-                                              _isCollapsed = false;
-                                              _isExpanded = true;
-                                              _bsbController.expand();
-                                            });
-                                            await controller.stop();
-                                            await controller.setPath(
-                                                filePath: audPath);
-                                            await controller.play();
-                                            await controller.stop();
-                                          }
-                                        },
-                                        child: SvgPicture.asset(
-                                          'assets/images/Polygon 5.svg',
-                                          color: audPath == ''
-                                              ? Colors.grey
-                                              : Colors.white,
-                                          height: 28,
-                                        )),
+                                      onTap: () async {
+                                        if (audPath != '') {
+                                          setState(() {
+                                            _isCollapsed = false;
+                                            _isExpanded = true;
+                                            _bsbController.expand();
+                                          });
+                                          await controller.stop();
+                                          await controller.setPath(
+                                              filePath: audPath);
+                                          await controller.play();
+                                          await controller.stop();
+                                        }
+                                      },
+                                      child: playingIcon(),
+                                    ),
                                     left: 30,
                                     top: 0,
                                     bottom: 0,
@@ -310,10 +293,10 @@ class RecordView extends RecordViewModel {
                 ),
                 (_state is LoadingState)
                     ? Container(
-                    color: AppColors.loadingBg,
-                    width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.height,
-                    child: Loading.loading)
+                        color: AppColors.loadingBg,
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height,
+                        child: Loading.loading)
                     : Container(),
               ],
             );
@@ -347,6 +330,31 @@ class RecordView extends RecordViewModel {
           },
         ),
       ),
+    );
+  }
+
+  Widget playingIcon() {
+    return StreamBuilder<PlayerState>(
+      stream: controller.playerState,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          if (snapshot.data!.playing) {
+            return Icon(
+              Icons.pause_rounded,
+              size: 28,
+              color: Colors.white,
+            );
+          } else {
+            return SvgPicture.asset(
+              'assets/images/Polygon 5.svg',
+              color: audPath == '' ? Colors.grey : Colors.white,
+              height: 28,
+            );
+          }
+        } else {
+          return Text('Stopped');
+        }
+      },
     );
   }
 }

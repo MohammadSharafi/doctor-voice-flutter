@@ -183,7 +183,9 @@ class OTPView extends OTPViewModel {
                                     )
                                   ],
                                   onCompleted: (v) {
-                                    print("Completed");
+                                    setState(() {
+                                      isVisible=true;
+                                    });
                                   },
                                   onChanged: (value) {
                                    if(value.length==4)
@@ -278,6 +280,9 @@ class OTPView extends OTPViewModel {
                             height: 20,
                           ),
                           RoundedButton(
+                            color: isVisible
+                                ? AppColors.primaryLightBlue
+                                : AppColors.primaryDarkBlue,
                             text: "Continues",
                             press: () async {
                               final otpToken = await getOTPToken();

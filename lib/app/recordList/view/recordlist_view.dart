@@ -49,6 +49,7 @@ class RecordListView extends RecordListViewModel {
               children: [
                 ListView.builder(
                   itemCount: voices.length,
+                  shrinkWrap: true,
                   itemBuilder: (context, index) {
                     return Container(
                       child: Column(

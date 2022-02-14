@@ -37,7 +37,9 @@ class _AboutUs extends State<AboutUs> {
                 CacheManager().deleteCacheDir();
                 CacheManager().deleteAppDir();
               },
-              onAboutUsTap: () {},
+              onAboutUsTap: () {
+                Navigator.of(context).pushNamed(AboutUs.routeName);
+              },
               onContactUsTap: () {
                 Navigator.of(context).pushNamed(ContactUs.routeName);
               },

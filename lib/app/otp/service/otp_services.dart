@@ -20,13 +20,19 @@ class OTPService extends IOTPService {
 
   @override
   Future<OTPResponseModel?> getOTP(OTPRequestModel model) async {
-    final response = await dio.post( OTPPath.OTP.rawValue, data: model, options: Options(contentType: Headers.jsonContentType));
+    try {
+      final response = await dio.post(OTPPath.OTP.rawValue, data: model,
+        options: Options(contentType: Headers.jsonContentType),);
 
-    if (response.statusCode == HttpStatus.ok) {
-      return OTPResponseModel().fromJson(response.data);
+
+      if (response.statusCode == HttpStatus.ok) {
+        return OTPResponseModel().fromJson(response.data);
+      }
+
+      return null;
+    }on Dio catch(e){
+      return null;
     }
-
-    return null;
   }
   @override
   Future<OTPFailResponseModel?> getFailOTP(OTPRequestModel model) async {
