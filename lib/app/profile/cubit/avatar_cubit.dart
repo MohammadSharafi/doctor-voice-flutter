@@ -17,7 +17,8 @@ class AvatarCubit extends Cubit<AvatarState> {
       final Avatar = await repository.setIMAGE(file);
       emit(UploadLoadedState(Avatar!));
     } catch (e) {
-      emit(AvatarErrorState());
+      emit(AvatarErrorState(error: 'Failed to update profile.'));
+
     }
   }
 

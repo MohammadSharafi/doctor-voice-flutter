@@ -14,7 +14,7 @@ import '../../home/globalCubit/global_cubit.dart';
 class TitlePagesView extends TitlePagesViewModel {
   @override
   void initState() {
-    BlocProvider.of<GlobalCubit>(context).getTitle('Text List',1);
+    BlocProvider.of<GlobalCubit>(context).getTitle('Text List', 1);
     super.initState();
   }
 
@@ -114,15 +114,18 @@ class TitlePagesView extends TitlePagesViewModel {
                   itemBuilder: (context, index) {
                     return GestureDetector(
                       onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (BuildContext context) => RecorderPage(
-                              args: ScreenArguments(texts[index].text ?? '',
-                                  texts[index].id ?? '', index),
+                        if (texts[index].is_recorded!) {
+                        } else {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (BuildContext context) => RecorderPage(
+                                args: ScreenArguments(texts[index].text ?? '',
+                                    texts[index].id ?? '', index),
+                              ),
                             ),
-                          ),
-                        );
+                          );
+                        }
                       },
                       child: Task(
                         text: texts[index].text ?? '',

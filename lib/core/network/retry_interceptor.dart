@@ -15,27 +15,27 @@ class RetryOnConnectionChangeInterceptor extends Interceptor {
 
   @override
   Future onError( DioError err, ErrorInterceptorHandler handler,) async {
-    if (_shouldRetry(err)) {
-      try {
-        return requestRetrier.scheduleRequestRetry(err.requestOptions);
-      } catch (e) {
-        return e;
+    try {
+      if(err.response?.statusCode==403 || err.response?.statusCode==401)
+      {
+        Future.delayed(Duration(seconds: 5)).then((value) =>{
+          RefreshService(NetworkService.instance.dio).refreshToken()
+        });
       }
+    if (_shouldRetry(err)) {
+        return requestRetrier.scheduleRequestRetry(err.requestOptions);
     }
-    return err;
+    } catch (e) {
+      return e;
+    }
+    super.onError(err, handler);
+
   }
 
   bool _shouldRetry(DioError err) {
     print(err);
-    if(err.response?.statusCode==403 || err.response?.statusCode==401)
-      {
-        Future.delayed(Duration(seconds: 5)).then((value) =>{
-        RefreshService(NetworkService.instance.dio).refreshToken()
-        });
-      }
-    return err.type == DioErrorType.other &&
-        err.error != null &&
-        err.error is SocketException;
+
+    return err.type == DioErrorType.other && err.error != null && err.error is SocketException;
   }
 
 

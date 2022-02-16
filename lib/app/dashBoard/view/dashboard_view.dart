@@ -19,9 +19,9 @@ class DashBoardView extends DashBoardViewModel {
   }
   @override
   bool get wantKeepAlive => true;
+
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
   }
 

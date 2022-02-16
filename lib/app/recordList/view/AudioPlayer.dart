@@ -3,6 +3,10 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+enum VoiceItemState{
+  OPEN,
+  CLOSE,
+}
 class AudioPlayerUrl extends StatefulWidget {
   final String url;
   String? title;
@@ -42,6 +46,7 @@ class _AudioPlayerUrlState extends State<AudioPlayerUrl> {
 
   AudioPlayer audioPlayer = AudioPlayer();
   PlayerState audioPlayerState = PlayerState.PAUSED;
+  VoiceItemState voiceItemState = VoiceItemState.CLOSE;
 
   /// Optional
   int timeProgress = 0;
@@ -122,194 +127,206 @@ class _AudioPlayerUrlState extends State<AudioPlayerUrl> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        margin: EdgeInsets.all(12),
-        alignment: Alignment.center,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Container(
-                      width: 40,
-                      height: 40,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: audioPlayerState == PlayerState.PLAYING
-                            ? Colors.transparent
-                            : AppColors.primaryDarkBlue,
-                        border: Border.all(
+    return GestureDetector(
+      onTap: (){
+        setState(() {
+          if(voiceItemState==VoiceItemState.CLOSE){
+            voiceItemState=VoiceItemState.OPEN;
+          }
+          else{
+            voiceItemState=VoiceItemState.CLOSE;
+          }
+        });
+      },
+      child: Container(
+          margin: EdgeInsets.all(12),
+          alignment: Alignment.center,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Container(
+                        width: 40,
+                        height: 40,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
                           color: audioPlayerState == PlayerState.PLAYING
-                              ? Colors.white
-                              : Colors.transparent,
-                        ),
-                      ),
-                      child: Center(
-                        child: IconButton(
-                            iconSize: 30,
-                            onPressed: () {
-                              audioPlayerState == PlayerState.PLAYING
-                                  ? pauseMusic()
-                                  : playMusic();
-                            },
-                            icon: Center(
-                              child: Icon(
-                                audioPlayerState == PlayerState.PLAYING
-                                    ? Icons.pause_rounded
-                                    : Icons.play_arrow_rounded,
-                                color: Colors.white,
-                                size: 20,
-                              ),
-                            )),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 12,
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          width: 100,
-                          child: Text(
-                            widget.title ?? '',
-                            textAlign: TextAlign.left,
-                            maxLines: 1,
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 13,
-                              fontWeight: FontWeight.w500,
-                            ),
+                              ? Colors.transparent
+                              : AppColors.primaryDarkBlue,
+                          border: Border.all(
+                            color: audioPlayerState == PlayerState.PLAYING
+                                ? Colors.white
+                                : Colors.transparent,
                           ),
                         ),
-                        Container(
-                          width: 120,
-                          child: Text(
-                            (widget.date)?? '',
-                            textAlign: TextAlign.left,
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 12,
-                              fontWeight: FontWeight.w300,
+                        child: Center(
+                          child: IconButton(
+                              iconSize: 30,
+                              onPressed: () {
+                                audioPlayerState == PlayerState.PLAYING
+                                    ? pauseMusic()
+                                    : playMusic();
+                              },
+                              icon: Center(
+                                child: Icon(
+                                  audioPlayerState == PlayerState.PLAYING
+                                      ? Icons.pause_rounded
+                                      : Icons.play_arrow_rounded,
+                                  color: Colors.white,
+                                  size: 20,
+                                ),
+                              )),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 12,
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            width: 100,
+                            child: Text(
+                              widget.title ?? '',
+                              textAlign: TextAlign.left,
+                              maxLines: 1,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 13,
+                                fontWeight: FontWeight.w500,
+                              ),
                             ),
+                          ),
+                          Container(
+                            width: 120,
+                            child: Text(
+                              (widget.date)?? '',
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 12,
+                                fontWeight: FontWeight.w300,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  Spacer(),
+                  Container(
+                    padding: EdgeInsets.all(5),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(8)),
+                      border: Border.all(
+                        width: 1,
+                        color: (widget.status ?? '')
+                                .toLowerCase()
+                                .contains('pending')
+                            ? AppColors.blueStatus
+                            : (widget.status ?? '')
+                                    .toLowerCase()
+                                    .contains('failed')
+                                ? AppColors.redStatus
+                                : AppColors.greenStatus,
+                      ),
+                      color: (widget.status ?? '')
+                              .toLowerCase()
+                              .contains('pending')
+                          ? AppColors.blueStatusBg
+                          : (widget.status ?? '').toLowerCase().contains('failed')
+                              ? AppColors.redStatusBg
+                              : AppColors.greenStatusBg,
+                    ),
+                    child: Row(
+                      children: [
+                        SvgPicture.asset(
+                          (widget.status ?? '').toLowerCase().contains('pending')
+                              ? 'assets/images/load.svg'
+                              : (widget.status ?? '')
+                                      .toLowerCase()
+                                      .contains('failed')
+                                  ? 'assets/images/Close Square.svg'
+                                  : 'assets/images/Tick Square.svg',
+                        ),
+                        SizedBox(
+                          width: 6,
+                        ),
+                        Text(
+                          widget.status ?? '',
+                          textAlign: TextAlign.left,
+                          style: TextStyle(
+                            color: (widget.status ?? '')
+                                    .toLowerCase()
+                                    .contains('pending')
+                                ? AppColors.blueStatus
+                                : (widget.status ?? '')
+                                        .toLowerCase()
+                                        .contains('failed')
+                                    ? AppColors.redStatus
+                                    : AppColors.greenStatus,
+                            fontSize: 13,
+                            fontWeight: FontWeight.w500,
                           ),
                         ),
                       ],
                     ),
-                  ],
-                ),
-                Spacer(),
-                Container(
-                  padding: EdgeInsets.all(5),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(8)),
-                    border: Border.all(
-                      width: 1,
-                      color: (widget.status ?? '')
-                              .toLowerCase()
-                              .contains('pending')
-                          ? AppColors.blueStatus
-                          : (widget.status ?? '')
-                                  .toLowerCase()
-                                  .contains('failed')
-                              ? AppColors.redStatus
-                              : AppColors.greenStatus,
-                    ),
-                    color: (widget.status ?? '')
-                            .toLowerCase()
-                            .contains('pending')
-                        ? AppColors.blueStatusBg
-                        : (widget.status ?? '').toLowerCase().contains('failed')
-                            ? AppColors.redStatusBg
-                            : AppColors.greenStatusBg,
                   ),
-                  child: Row(
-                    children: [
-                      SvgPicture.asset(
-                        (widget.status ?? '').toLowerCase().contains('pending')
-                            ? 'assets/images/load.svg'
-                            : (widget.status ?? '')
-                                    .toLowerCase()
-                                    .contains('failed')
-                                ? 'assets/images/Close Square.svg'
-                                : 'assets/images/Tick Square.svg',
-                      ),
-                      SizedBox(
-                        width: 6,
-                      ),
-                      Text(
-                        widget.status ?? '',
-                        textAlign: TextAlign.left,
-                        style: TextStyle(
-                          color: (widget.status ?? '')
-                                  .toLowerCase()
-                                  .contains('pending')
-                              ? AppColors.blueStatus
-                              : (widget.status ?? '')
-                                      .toLowerCase()
-                                      .contains('failed')
-                                  ? AppColors.redStatus
-                                  : AppColors.greenStatus,
-                          fontSize: 13,
-                          fontWeight: FontWeight.w500,
+                ],
+              ),
+              voiceItemState == VoiceItemState.OPEN
+                  ? Column(
+                      children: [
+                        SizedBox(
+                          height: 20,
                         ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            audioPlayerState == PlayerState.PLAYING
-                ? Column(
-                    children: [
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Text(
-                        widget.text ?? '',
-                        textAlign: TextAlign.left,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 13,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            getTimeString(timeProgress),
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 13,
-                              fontWeight: FontWeight.w500,
-                            ),
+                        Text(
+                          widget.text ?? '',
+                          textAlign: TextAlign.left,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 13,
+                            fontWeight: FontWeight.w500,
                           ),
-                          SizedBox(width: 20),
-                          Container(width: 200, child: slider()),
-                          SizedBox(width: 20),
-                          Text(
-                            getTimeString(audioDuration),
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 13,
-                              fontWeight: FontWeight.w500,
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              getTimeString(timeProgress),
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 13,
+                                fontWeight: FontWeight.w500,
+                              ),
                             ),
-                          )
-                        ],
-                      ),
-                    ],
-                  )
-                : Container(),
-          ],
-        ));
+                            SizedBox(width: 20),
+                            Container(width: 200, child: slider()),
+                            SizedBox(width: 20),
+                            Text(
+                              getTimeString(audioDuration),
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 13,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            )
+                          ],
+                        ),
+                      ],
+                    )
+                  : Container(),
+            ],
+          )),
+    );
   }
 }

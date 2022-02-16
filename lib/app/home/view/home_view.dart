@@ -38,6 +38,7 @@ class HomeView extends HomeViewModel {
       builder: (context, state) {
         return CustomScaffold(
           scaffold: Scaffold(
+            resizeToAvoidBottomInset: false,
             drawer: AppDrawer(
               onSignUpTap: () {
                 CacheManager().saveToken('');
@@ -70,12 +71,14 @@ class HomeView extends HomeViewModel {
             bottomNavigationBar: BottomNavigationBar(
               backgroundColor: AppColors.darkBG.withOpacity(0.5),
               type: BottomNavigationBarType.fixed,
+              enableFeedback: false,
+              unselectedFontSize: 0,
+              selectedFontSize: 0,
               elevation: 8,
               onTap: (index){
                 navigatorKey.currentState!.maybePop();
                 setState(() => _page = _children[index]);
                 setState(() => _currentIndex = index);
-
 
               },
               currentIndex: (state is GlobalLoadedState) ? state.index : 1,
@@ -83,13 +86,13 @@ class HomeView extends HomeViewModel {
               showUnselectedLabels: false,
               items: [
                 BottomNavigationBarItem(
-                    icon: SvgPicture.asset(((state is GlobalLoadedState) ? state.index : 1) == 0 ? 'assets/images/Iconly-Bold-Category.svg' : 'assets/images/Category.svg', width: 28,height: 28,),
-                label: ''),
+                    icon: SvgPicture.asset(((state is GlobalLoadedState) ? state.index : 1) == 0 ? 'assets/images/Iconly-Bold-Category.svg' : 'assets/images/Category.svg', width: 28,height: 28,alignment: Alignment.bottomCenter,),
+                label: '',),
                 BottomNavigationBarItem(
-                    icon: SvgPicture.asset(((state is GlobalLoadedState) ? state.index : 1) == 1 ? 'assets/images/Iconly-Bold-Home.svg' : 'assets/images/Iconly-Light-outline-Home.svg', width: 28,height: 28,),
+                    icon: SvgPicture.asset(((state is GlobalLoadedState) ? state.index : 1) == 1 ? 'assets/images/Iconly-Bold-Home.svg' : 'assets/images/Iconly-Light-outline-Home.svg', width: 28,height: 28,alignment: Alignment.bottomCenter,),
                     label: ''),
                 BottomNavigationBarItem(
-                    icon: SvgPicture.asset(((state is GlobalLoadedState) ? state.index : 1) == 2 ? 'assets/images/Iconly-Light-outline-Profile.svg' : 'assets/images/Iconly-Light-outline-Profile.svg', width: 28,height: 28,),
+                    icon: SvgPicture.asset(((state is GlobalLoadedState) ? state.index : 1) == 2 ? 'assets/images/Iconly-Light-outline-Profile.svg' : 'assets/images/Iconly-Light-outline-Profile.svg', width: 28,height: 28,alignment: Alignment.bottomCenter,),
                     label: ''),
             ],),
 

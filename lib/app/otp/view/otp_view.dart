@@ -24,8 +24,9 @@ class OTPView extends OTPViewModel {
   int endTime = DateTime.now().millisecondsSinceEpoch + 1000 * 180;
   final GlobalKey<FormState> _formKey = GlobalKey();
   TextEditingController textEditingController = TextEditingController();
-   bool timeFinish=false;
-   bool isVisible = false;
+  bool timeFinish = false;
+  bool isVisible = false;
+
   // ignore: close_sinks
   late StreamController<ErrorAnimationType> errorController;
 
@@ -37,20 +38,30 @@ class OTPView extends OTPViewModel {
   @override
   void dispose() {
     controllerCountdownTimer.dispose();
+    textEditingController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return BlocBuilder<OTPCubit, OTPState>(
-      builder: (context, state) {
-        if (state is LoadedState) {
-          fetchUserOTP(state.response);
-        }
-        return Scaffold(
-          resizeToAvoidBottomInset: false,
-          body: Stack(
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      body: BlocBuilder<OTPCubit, OTPState>(
+        builder: (context, state) {
+          if (state is LoadedState) {
+            fetchUserOTP(state.response);
+          }
+          if (state is ErrorState) {
+            Future.delayed(Duration.zero).then((value) {
+              Scaffold.of(context).showSnackBar(SnackBar(
+                backgroundColor: Colors.red,
+                content: Text(state.error!),
+                duration: const Duration(seconds: 1),
+              ));
+            });
+          }
+          return Stack(
             children: [
               GestureDetector(
                 onTap: () => FocusScope.of(context).unfocus(),
@@ -171,7 +182,8 @@ class OTPView extends OTPViewModel {
                                     activeColor: Colors.grey,
                                   ),
                                   cursorColor: Colors.white,
-                                  animationDuration: Duration(milliseconds: 300),
+                                  animationDuration:
+                                      Duration(milliseconds: 300),
                                   enableActiveFill: true,
                                   controller: textEditingController,
                                   keyboardType: TextInputType.number,
@@ -184,21 +196,10 @@ class OTPView extends OTPViewModel {
                                   ],
                                   onCompleted: (v) {
                                     setState(() {
-                                      isVisible=true;
+                                      isVisible = true;
                                     });
                                   },
                                   onChanged: (value) {
-                                   if(value.length==4)
-                                     {
-                                       setState(() {
-                                         isVisible=true;
-                                       });
-                                     }
-                                   else{
-                                     setState(() {
-                                       isVisible=false;
-                                     });
-                                   }
 
                                   },
                                   beforeTextPaste: (text) {
@@ -226,11 +227,10 @@ class OTPView extends OTPViewModel {
                                   ),
                                 )
                               : GestureDetector(
-                            onTap: (){
-                              navigateToLogin();
-
-                            },
-                                child: Text.rich(
+                                  onTap: () {
+                                    navigateToLogin();
+                                  },
+                                  child: Text.rich(
                                     TextSpan(children: <InlineSpan>[
                                       TextSpan(
                                         text: 'Resend code up ',
@@ -243,16 +243,20 @@ class OTPView extends OTPViewModel {
                                         child: CountdownTimer(
                                           endTime: endTime,
                                           widgetBuilder:
-                                              (_, CurrentRemainingTime ? time) {
-                                            if(time?.min ==null && time?.sec ==null){
-                                                timeFinish=true;
-                                            }
-                                            else{
-                                                timeFinish=false;
+                                              (_, CurrentRemainingTime? time) {
+                                            if (time?.min == null &&
+                                                time?.sec == null) {
+                                              timeFinish = true;
+                                            } else {
+                                              timeFinish = false;
                                             }
                                             if (time != null) {
                                               return Text(
-                                                '${time.min ?? 0}'.padLeft(2, '0') + ':' + '${time.sec ?? 0}'.padLeft(2, '0'),
+                                                '${time.min ?? 0}'
+                                                        .padLeft(2, '0') +
+                                                    ':' +
+                                                    '${time.sec ?? 0}'
+                                                        .padLeft(2, '0'),
                                                 style: TextStyle(
                                                   color: Colors.white,
                                                   fontSize: 16,
@@ -274,7 +278,7 @@ class OTPView extends OTPViewModel {
                                       ),
                                     ]),
                                   ),
-                              ),
+                                ),
 
                           SizedBox(
                             height: 20,
@@ -286,8 +290,7 @@ class OTPView extends OTPViewModel {
                             text: "Continues",
                             press: () async {
                               final otpToken = await getOTPToken();
-
-                              if(isVisible) {
+                              if (isVisible) {
                                 BlocProvider.of<OTPCubit>(context)
                                     .OTP(textEditingController.text, otpToken);
                               }
@@ -301,18 +304,18 @@ class OTPView extends OTPViewModel {
                 ),
               ),
               (state is LoadingState)
-            ?Center(
-                child: Container(
-                      color: AppColors.loadingBg,
-                      width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.height,
-                      child: Loading.loading),
-              )
-            :Container(),
+                  ? Center(
+                      child: Container(
+                          color: AppColors.loadingBg,
+                          width: MediaQuery.of(context).size.width,
+                          height: MediaQuery.of(context).size.height,
+                          child: Loading.loading),
+                    )
+                  : Container(),
             ],
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 
@@ -321,7 +324,8 @@ class OTPView extends OTPViewModel {
   }
 
   void navigateToHome() {
-    Navigator.of(context).pushNamedAndRemoveUntil(Home.routeName,(Route<dynamic> route) => false);
+    Navigator.of(context).pushNamedAndRemoveUntil(
+        Home.routeName, (Route<dynamic> route) => false);
   }
 
   void navigateToLogin() {

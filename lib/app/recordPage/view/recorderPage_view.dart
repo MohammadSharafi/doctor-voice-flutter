@@ -49,8 +49,8 @@ class RecorderPageView extends RecorderPageViewModel {
               minWidth: 120.0,
               cornerRadius: 8.0,
               activeBgColors: [
-                [Colors.grey.shade400],
-                [Colors.grey.shade400]
+                [Color.fromRGBO(57, 57, 57, 1.0)],
+                [Color.fromRGBO(57, 57, 57, 1.0)],
               ],
               activeFgColor: Colors.white,
               inactiveBgColor: Colors.black,

@@ -16,7 +16,7 @@ class LoginCubit extends Cubit<LoginState> {
     }
 
     emit(LoadingState());
-    Timer(Duration(seconds: 1), ()  {
+    Timer(Duration(microseconds: 100), ()  {
        repository.getLogin(UserRequestModel(phone_number: mobile)).then((response) {
         emit(LoadedState(response));
 

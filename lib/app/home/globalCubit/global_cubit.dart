@@ -20,3 +20,4 @@ class GlobalCubit extends Cubit<GlobalState> {
     emit(InitialState());
   }
 }
+

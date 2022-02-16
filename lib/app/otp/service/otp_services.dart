@@ -11,7 +11,7 @@ import 'package:dio/dio.dart';
 abstract class IOTPService{
     IOTPService(this.dio);
 
-  Future<OTPResponseModel?> getOTP(OTPRequestModel model);
+  Future<dynamic> getOTP(OTPRequestModel model);
   final Dio dio;
 }
 
@@ -19,19 +19,37 @@ class OTPService extends IOTPService {
   OTPService(Dio dio) : super(dio);
 
   @override
-  Future<OTPResponseModel?> getOTP(OTPRequestModel model) async {
+  Future<dynamic> getOTP(OTPRequestModel model) async {
     try {
-      final response = await dio.post(OTPPath.OTP.rawValue, data: model,
-        options: Options(contentType: Headers.jsonContentType),);
+      final response = await dio
+          .post(OTPPath.OTP.rawValue, data: model, options: Options(contentType: Headers.jsonContentType,receiveDataWhenStatusError: true,),)
+          .catchError((error) {
+        print(error);
+      });
 
 
+      print(response);
+      if (response.statusCode == HttpStatus.internalServerError) {
+
+
+        return OTPResponseModel().fromJson(response.data);
+      }
+      if (response.statusCode == HttpStatus.badRequest) {
+
+
+        return OTPResponseModel().fromJson(response.data);
+      }
       if (response.statusCode == HttpStatus.ok) {
         return OTPResponseModel().fromJson(response.data);
       }
 
-      return null;
-    }on Dio catch(e){
-      return null;
+
+      return OTPResponseModel().fromJson(response.data);
+    } on DioError catch(e){
+      return e.message;
+    }
+    finally {
+      print('finally');
     }
   }
   @override

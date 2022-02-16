@@ -19,20 +19,30 @@ class LoginView extends LoginViewModel {
   final GlobalKey<FormState> _formKey = GlobalKey();
   final TextEditingController controllerPhone = TextEditingController();
   bool isVisible = false;
+  final GlobalKey<ScaffoldState> _scaffoldkey = new GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return BlocBuilder<LoginCubit, LoginState>(
-      builder: (context, state) {
-        if (state is LoadedState) {
-          fetchUserLogin(
-            state.response,
-          );
-        }
-        return Scaffold(
-          resizeToAvoidBottomInset: false,
-          body: Stack(
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      key: _scaffoldkey,
+      body: BlocBuilder<LoginCubit, LoginState>(
+        builder: (context, state) {
+          if (state is LoadedState) {
+            fetchUserLogin(
+              state.response,
+            );
+          }
+          if (state is ErrorState) {
+            Scaffold.of(context).showSnackBar(
+                SnackBar(
+                  backgroundColor:Colors.red,
+                  content: Text(state.error!),
+                  duration: const Duration(seconds: 1),
+                ));
+          }
+          return Stack(
             children: [
               GestureDetector(
                 onTap: () => FocusScope.of(context).unfocus(),
@@ -135,6 +145,7 @@ class LoginView extends LoginViewModel {
                             text: "Login",
                             press: () {
                               if (isVisible) {
+
                                 if (_formKey.currentState?.validate() ??
                                     false) {
                                   BlocProvider.of<LoginCubit>(context)
@@ -160,9 +171,9 @@ class LoginView extends LoginViewModel {
                     )
                   : Container(),
             ],
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 }

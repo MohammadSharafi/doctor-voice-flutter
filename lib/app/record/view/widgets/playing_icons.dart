@@ -38,7 +38,7 @@ class _PlayingIconState extends State<PlayingIcon>
     offsetArrary.shuffle();
     controller = AnimationController(
       vsync: this,
-      duration: Duration(seconds: 1),
+      duration: Duration(microseconds: 100),
     );
     animation = Tween<double>(
       begin: 0,

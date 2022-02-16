@@ -15,14 +15,14 @@ class OTPCubit extends Cubit<OTPState> {
   Future<void> OTP(String ? code,String ? otp_token) async {
     try {
       emit(LoadingState());
-
        var response = await  repository.getOTP(OTPRequestModel(otp_token:otp_token ,code:code )).timeout(const Duration(seconds: 12));
        emit(LoadedState(response!));
 
     } on TimeoutException catch (e) {
-      emit(ErrorState());
+      emit(ErrorState(error: 'Internal server error'));
     } on Error catch (e) {
-      emit(ErrorState());
+      emit(ErrorState(error: 'Internal server error'));
+
     }
 
 

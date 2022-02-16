@@ -21,7 +21,7 @@ class ProfileCubit extends Cubit<ProfileState> {
       final profile = await repository.getProfile();
       emit(LoadedState(profile!));
     } catch (e) {
-      emit(ErrorState());
+      emit(ErrorState(error: 'Failed to update profile.'));
     }
   }
   void updateProfile(ProfileUploadResponse model) async {
@@ -30,7 +30,7 @@ class ProfileCubit extends Cubit<ProfileState> {
       final profile = await repository.setProfile(model);
       emit(UpdateLoadedState(profile!));
     } catch (e) {
-      emit(ErrorState());
+      emit(ErrorState(error: 'The image failed to upload.'));
     }
   }
 

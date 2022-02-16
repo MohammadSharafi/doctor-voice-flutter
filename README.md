@@ -1,3 +1,4 @@
 # Doctor Voice Flutter
 
-//flutter run --no-sound-null-safety
+ run =======>  flutter run --no-sound-null-safety
+ build =======>  flutter build apk --release --no-sound-null-safety

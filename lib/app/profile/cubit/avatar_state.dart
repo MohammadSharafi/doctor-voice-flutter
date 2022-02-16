@@ -24,6 +24,9 @@ class UploadLoadedState extends AvatarState {
 }
 
 class AvatarErrorState extends AvatarState {
+  final String ? error;
+
+  AvatarErrorState({this.error});
   @override
   List<Object> get props => [];
 }

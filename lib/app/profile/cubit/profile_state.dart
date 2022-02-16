@@ -37,6 +37,9 @@ class UpdateLoadedState extends ProfileState {
 }
 
 class ErrorState extends ProfileState {
+  final String ? error;
+
+  ErrorState({this.error});
   @override
   List<Object> get props => [];
 }
