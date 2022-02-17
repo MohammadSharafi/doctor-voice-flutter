@@ -106,7 +106,7 @@ class ProfileView extends ProfileViewModel {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               (state is LoadedState)?
-                              (state.profileModel.avatar ?? '').isNotEmpty
+                              (state.profileModel.avatar ?? '').isEmpty
                                   ? Container(
                                     height: 100,
                                     width: 100,
