@@ -20,10 +20,6 @@ class DashBoardView extends DashBoardViewModel {
   @override
   bool get wantKeepAlive => true;
 
-  @override
-  void dispose() {
-    super.dispose();
-  }
 
   //DashBoardService get homeViewModel => context.read<DashBoardService>();
 

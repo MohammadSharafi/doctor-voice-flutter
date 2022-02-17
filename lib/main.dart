@@ -5,6 +5,7 @@ import 'package:aimedic/app/dashBoard/dashboard.dart';
 import 'package:aimedic/app/otp/cubit/otp_cubit.dart';
 import 'package:aimedic/app/profile/cubit/avatar_cubit.dart';
 import 'package:aimedic/app/profile/service/profile_service.dart';
+import 'package:aimedic/app/recordList/cubit/open_close_cubit.dart';
 import 'package:aimedic/app/titlePages/titlePages.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -38,6 +39,9 @@ void main() {
       providers: [
         BlocProvider<RecordCubit>(
           create: (context) => RecordCubit(),
+        ),
+        BlocProvider<openCloseCubit>(
+          create: (context) => openCloseCubit(),
         ),
         BlocProvider<VoiceUploadCubit>(
           create: (context) => VoiceUploadCubit(repository: RecordService(dio)),

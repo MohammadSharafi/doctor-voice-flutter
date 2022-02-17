@@ -44,31 +44,27 @@ class RecordListView extends RecordListViewModel {
         } else if (state is LoadedState) {
           final voices = state.voiceList;
 
-          return SingleChildScrollView(
-            child: Column(
-              children: [
-                ListView.builder(
+          return Column(
+            children: [
+              Expanded(
+                child: ListView.builder(
                   itemCount: voices.length,
-                  shrinkWrap: true,
                   itemBuilder: (context, index) {
                     return Container(
-                      child: Column(
-                        children: [
-                          MediaWidget(
-                            url: voices[index].url,
-                            key: ValueKey(index),
-                            text:voices[index].text?.text ,
-                            date: voices[index].created_at?.split('T').first,
-                            title:'Text '+'${index+1}'.padLeft(3,'0') ,
-                            status: voices[index].status,
-                          ),
-                        ],
+                      child: MediaWidget(
+                        url: voices[index].url,
+                        key: ValueKey(index),
+                        text:voices[index].text?.text ,
+                        date: voices[index].created_at?.split('T').first,
+                        title:'Text '+'${index+1}'.padLeft(3,'0') ,
+                        status: voices[index].status,
+                        index:index
                       ),
                     );
                   },
                 ),
-              ],
-            ),
+              ),
+            ],
           );
         } else {
           return Container();

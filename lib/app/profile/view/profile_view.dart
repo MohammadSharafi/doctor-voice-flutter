@@ -60,9 +60,8 @@ class ProfileView extends ProfileViewModel {
                 height: MediaQuery.of(context).size.height,
                 child: Loading.loading),
           );
-
         }
-         if (state is ErrorState) {
+        if (state is ErrorState) {
           Future.delayed(Duration.zero).then((value) {
             Scaffold.of(context).showSnackBar(SnackBar(
               backgroundColor: Colors.red,
@@ -72,9 +71,6 @@ class ProfileView extends ProfileViewModel {
           });
         }
 
-         if (state is LoadedState) {
-          final profile = state.profileModel;
-          controllerName.text = profile.fullName ?? '';
 
           return SingleChildScrollView(
             child: BlocBuilder<AvatarCubit, AvatarState>(
@@ -83,10 +79,18 @@ class ProfileView extends ProfileViewModel {
                   Future.delayed(Duration.zero).then((value) {
                     Scaffold.of(context).showSnackBar(SnackBar(
                       backgroundColor: Colors.red,
-                      content: Text(_state.error ??'Failed to upload profile image'),
+                      content: Text(
+                          _state.error ?? 'Failed to upload profile image'),
                       duration: const Duration(seconds: 1),
                     ));
                   });
+                }
+                if (_state is UploadLoadedState) {
+                  BlocProvider.of<ProfileCubit>(context).updateProfile(
+                      ProfileUploadResponse(
+                          fullName: controllerName.text,
+                          avatar: _state.uploadModel.fileName,
+                          gmcNumber: controllerCode.text));
                 }
                 return Stack(
                   children: [
@@ -98,34 +102,58 @@ class ProfileView extends ProfileViewModel {
                           SizedBox(
                             height: 20,
                           ),
-                          Container(
-                            width: double.maxFinite,
-                            child: Container(
-                              height: 100,
-                              width: 100,
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: Colors.white70,
-                                    width: 1,
-                                  ),
-                                  shape: BoxShape.circle),
-                              child: (state.profileModel.avatar ?? '').isEmpty
-                                  ? SvgPicture.asset(
-                                      'assets/images/Iconly-Bold-Add User.svg',
-                                      width: 30,
-                                      height: 30,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              (state is LoadedState)?
+                              (state.profileModel.avatar ?? '').isEmpty
+                                  ? Container(
+                                      width: double.maxFinite,
+                                      child: Container(
+                                        height: 100,
+                                        width: 100,
+                                        alignment: Alignment.center,
+                                        decoration: BoxDecoration(
+                                            border: Border.all(
+                                              color: Colors.white70,
+                                              width: 1,
+                                            ),
+                                            shape: BoxShape.circle),
+                                        child: SvgPicture.asset(
+                                          'assets/images/Iconly-Bold-Add User.svg',
+                                          width: 30,
+                                          height: 30,
+                                        ),
+                                      ),
                                     )
                                   : CircleAvatar(
-                                      backgroundColor: Colors.white,
-                                      child: ClipRect(
+                                      radius: 50.0,
+                                      child: ClipOval(
                                           child: Image.network(
                                         (state.profileModel.avatar)!,
-                                        height: 95,
-                                        width: 95,
+                                        height:100,
+                                        width: 100,
                                       )),
-                                    ),
-                            ),
+                                    ):Container(
+                                width: double.maxFinite,
+                                child: Container(
+                                  height: 100,
+                                  width: 100,
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                      border: Border.all(
+                                        color: Colors.white70,
+                                        width: 1,
+                                      ),
+                                      shape: BoxShape.circle),
+                                  child: SvgPicture.asset(
+                                    'assets/images/Iconly-Bold-Add User.svg',
+                                    width: 30,
+                                    height: 30,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                           SizedBox(
                             height: 12,
@@ -134,55 +162,75 @@ class ProfileView extends ProfileViewModel {
                             width: double.maxFinite,
                             child: GestureDetector(
                               onTap: () async {
-                                  try {
-                                    final pickedFile = await _picker.pickImage(
-                                      source: ImageSource.gallery,
-                                      maxWidth: 80,
-                                      maxHeight: 80,
-                                      imageQuality: 25,
-                                    );
-                                    _imageFile = pickedFile;
-                                    BlocProvider.of<AvatarCubit>(context).uploadAvatar(File(pickedFile!.path));
-
-                                  } catch (e) {
-                                    setState(() {
-                                      print(e);
-                                      _pickImageError = e;
-                                    });
-                                  }
+                                try {
+                                  final pickedFile = await _picker.pickImage(
+                                    source: ImageSource.gallery,
+                                    maxWidth: 100,
+                                    maxHeight: 100,
+                                    imageQuality: 30,
+                                  );
+                                  _imageFile = pickedFile;
+                                  BlocProvider.of<AvatarCubit>(context).uploadAvatar(File(pickedFile!.path));
+                                } catch (e) {
+                                  setState(() {
+                                    print(e);
+                                    _pickImageError = e;
+                                  });
+                                }
                               },
                               child: Center(
-                                      child: (state.profileModel.avatar ?? '').isEmpty
-                                          ? Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                SvgPicture.asset(
-                                                  'assets/images/Iconly-Bold-Edit.svg',
-                                                  width: 16,
-                                                ),
-                                                SizedBox(
-                                                  width: 4,
-                                                ),
-                                                Text(
-                                                  'Change image',
-                                                  style: TextStyle(
-                                                    color: Colors.white70,
-                                                    fontSize: 14,
-                                                    fontWeight: FontWeight.w500,
-                                                  ),
-                                                ),
-                                              ],
-                                            )
-                                          : Text(
-                                              'Profile image',
-                                              style: TextStyle(
-                                                color: Colors.white70,
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w500,
-                                              ),
+                                child:
+                                (state is LoadedState)?(state.profileModel.avatar ?? '').isEmpty
+                                    ? Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          SvgPicture.asset(
+                                            'assets/images/Iconly-Bold-Edit.svg',
+                                            width: 16,
+                                          ),
+                                          SizedBox(
+                                            width: 4,
+                                          ),
+                                          Text(
+                                            'Change image',
+                                            style: TextStyle(
+                                              color: Colors.white70,
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w500,
                                             ),
+                                          ),
+                                        ],
+                                      )
+                                    : Text(
+                                        'Profile image',
+                                        style: TextStyle(
+                                          color: Colors.white70,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ):Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.center,
+                                  children: [
+                                    SvgPicture.asset(
+                                      'assets/images/Iconly-Bold-Edit.svg',
+                                      width: 16,
                                     ),
+                                    SizedBox(
+                                      width: 4,
+                                    ),
+                                    Text(
+                                      'Change image',
+                                      style: TextStyle(
+                                        color: Colors.white70,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ),
                           ),
                           SizedBox(
@@ -237,11 +285,12 @@ class ProfileView extends ProfileViewModel {
                           RoundedButton(
                             text: "Submit",
                             press: () {
-                              BlocProvider.of<ProfileCubit>(context).updateProfile(
-                                  ProfileUploadResponse(
+                              if(state is LoadedState)
+                              BlocProvider.of<ProfileCubit>(context)
+                                  .updateProfile(ProfileUploadResponse(
                                       fullName: controllerName.text,
-                                      avatar: controllerCode.text,
-                                      gmcNumber: state.profileModel.avatar ?? ''));
+                                      avatar: state.profileModel.avatar,
+                                      gmcNumber: controllerCode.text));
                             },
                           ),
                         ],
@@ -249,21 +298,25 @@ class ProfileView extends ProfileViewModel {
                     ),
                     (_state is UpLoadLoadingState)
                         ? Container(
-                        color: AppColors.loadingBg,
-                        width: MediaQuery.of(context).size.width,
-                        height: MediaQuery.of(context).size.height,
-                        child: Loading.loading)
-                        :Container()
+                            color: AppColors.loadingBg,
+                            width: MediaQuery.of(context).size.width,
+                            height: MediaQuery.of(context).size.height,
+                            child: Loading.loading)
+                        : Container(),
+                    (state is UpdateLoadingState)
+                        ? Container(
+                            color: AppColors.loadingBg,
+                            width: MediaQuery.of(context).size.width,
+                            height: MediaQuery.of(context).size.height,
+                            child: Loading.loading)
+                        : Container(),
                   ],
                 );
               },
             ),
           );
-        } else {
-          return Container();
-        }
+
       },
     );
   }
-
 }

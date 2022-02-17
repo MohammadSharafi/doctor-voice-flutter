@@ -58,6 +58,7 @@ class RecordView extends RecordViewModel {
 
   @override
   void initState() {
+    audPath='';
     BlocProvider.of<GlobalCubit>(context).getTitle('Record', 1);
     _bsbController.addListener(_onBsbChanged);
     super.initState();
@@ -112,7 +113,7 @@ class RecordView extends RecordViewModel {
                                           },
                                           child: SvgPicture.asset(
                                             'assets/images/send.svg',
-                                            color: Colors.white,
+                                            color: audPath == '' ? Colors.white.withOpacity(0.2) : Colors.white,
                                             height: 28,
                                           ),
                                         ),
@@ -192,7 +193,7 @@ class RecordView extends RecordViewModel {
                                       child: SvgPicture.asset(
                                         'assets/images/send.svg',
                                         color: audPath == ''
-                                            ? Colors.grey
+                                            ? Colors.white.withOpacity(0.2)
                                             : Colors.white,
                                         height: 28,
                                       ),
@@ -347,7 +348,7 @@ class RecordView extends RecordViewModel {
           } else {
             return SvgPicture.asset(
               'assets/images/Polygon 5.svg',
-              color: audPath == '' ? Colors.grey : Colors.white,
+              color: audPath == '' ? Colors.white.withOpacity(0.2) : Colors.white,
               height: 28,
             );
           }

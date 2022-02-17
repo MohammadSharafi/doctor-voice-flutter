@@ -64,7 +64,13 @@ class OTPView extends OTPViewModel {
           return Stack(
             children: [
               GestureDetector(
-                onTap: () => FocusScope.of(context).unfocus(),
+                onTap: () {
+                  FocusScopeNode currentFocus = FocusScope.of(context);
+
+                  if (!currentFocus.hasPrimaryFocus) {
+                    currentFocus.unfocus();
+                  }
+                },
                 child: Background(
                   child: Form(
                     key: _formKey,

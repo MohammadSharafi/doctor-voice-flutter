@@ -47,7 +47,7 @@ class RecorderPageView extends RecorderPageViewModel {
             ),
             ToggleSwitch(
               minWidth: 120.0,
-              cornerRadius: 8.0,
+              cornerRadius: 12.0,
               activeBgColors: [
                 [Color.fromRGBO(57, 57, 57, 1.0)],
                 [Color.fromRGBO(57, 57, 57, 1.0)],
@@ -57,8 +57,10 @@ class RecorderPageView extends RecorderPageViewModel {
               inactiveFgColor: Colors.white,
               initialLabelIndex: 0,
               totalSwitches: 2,
+              borderColor: [Colors.black87],
               labels: ['Record', 'List'],
               radiusStyle: true,
+              borderWidth: 3,
               onToggle: (index) {
                 print('switched to: $index');
                 controller.jumpToPage(index!);

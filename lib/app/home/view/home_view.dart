@@ -1,3 +1,4 @@
+import 'package:aimedic/app/dashBoard/view/dashboard_view.dart';
 import 'package:aimedic/app/titlePages/titlePages.dart';
 import 'package:aimedic/core/constants/app_colors.dart';
 import 'package:custom_navigator/custom_navigation.dart';
@@ -15,6 +16,8 @@ import '../../../core/cache_manager.dart';
 import '../../JustView/AboutUs.dart';
 import '../../JustView/ContactUs.dart';
 import '../../login/login.dart';
+import '../../profile/view/profile_view.dart';
+import '../../titlePages/view/titlePages_view.dart';
 import '../globalCubit/global_cubit.dart';
 
 class HomeView extends HomeViewModel {
@@ -23,6 +26,14 @@ class HomeView extends HomeViewModel {
     super.initState();
   }
 
+  @override
+  void dispose() {
+    DashBoardView().dispose();
+    ProfileView().dispose();
+    TitlePagesView().dispose();
+
+    super.dispose();
+  }
   final List<Widget> _children = [
     DashBoard(),
     TitlePages(),
@@ -74,7 +85,7 @@ class HomeView extends HomeViewModel {
               enableFeedback: false,
               unselectedFontSize: 0,
               selectedFontSize: 0,
-              elevation: 8,
+              elevation: 0.5,
               onTap: (index){
                 navigatorKey.currentState!.maybePop();
                 setState(() => _page = _children[index]);

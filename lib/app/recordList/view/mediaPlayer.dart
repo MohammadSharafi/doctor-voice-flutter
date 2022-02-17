@@ -8,6 +8,7 @@ class MediaWidget extends StatefulWidget {
   String? date;
   String? text;
   String? status;
+  int? index;
 
   MediaWidget(
       {Key? key,
@@ -15,7 +16,7 @@ class MediaWidget extends StatefulWidget {
       required this.text,
       required this.title,
       required this.status,
-       this.date});
+       this.date,this.index});
 
   @override
   _MediaWidgetState createState() => _MediaWidgetState();
@@ -49,6 +50,7 @@ class _MediaWidgetState extends State<MediaWidget> {
       text:widget.text ?? '' ,
       title: widget.title ?? '',
       date:  widget.date ?? '',
+      index: widget.index
     );
 
     return Container();

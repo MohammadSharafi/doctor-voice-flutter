@@ -35,17 +35,22 @@ class LoginView extends LoginViewModel {
             );
           }
           if (state is ErrorState) {
-            Scaffold.of(context).showSnackBar(
-                SnackBar(
-                  backgroundColor:Colors.red,
-                  content: Text(state.error!),
-                  duration: const Duration(seconds: 1),
-                ));
+            Scaffold.of(context).showSnackBar(SnackBar(
+              backgroundColor: Colors.red,
+              content: Text(state.error!),
+              duration: const Duration(seconds: 1),
+            ));
           }
           return Stack(
             children: [
               GestureDetector(
-                onTap: () => FocusScope.of(context).unfocus(),
+                onTap: () {
+                  FocusScopeNode currentFocus = FocusScope.of(context);
+
+                  if (!currentFocus.hasPrimaryFocus) {
+                    currentFocus.unfocus();
+                  }
+                },
                 child: Background(
                   child: Form(
                     key: _formKey,
@@ -145,7 +150,6 @@ class LoginView extends LoginViewModel {
                             text: "Login",
                             press: () {
                               if (isVisible) {
-
                                 if (_formKey.currentState?.validate() ??
                                     false) {
                                   BlocProvider.of<LoginCubit>(context)

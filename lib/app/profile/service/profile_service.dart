@@ -67,11 +67,11 @@ class ProfileService extends IProfileService with ChangeNotifier, CacheManager {
       'file': await MultipartFile.fromFile(file.path,
           filename: file.path.split('/').last),
     });
-    final response = await dio.post(ServicePath.PATH.rawValue,
+    final response = await dio.post(ServicePath.UPLOAD.rawValue,
         data: formData,
         options: Options(headers: {
           'Authorization':
-              'Bearer $token', /*'Content-Type' : 'multipart/form-data'*/
+              'Bearer $token', 'Content-Type' : 'multipart/form-data'
         } // set content-length
             ));
     if (response.statusCode == HttpStatus.ok) {

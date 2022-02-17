@@ -8,12 +8,12 @@ part 'voice_refactor_state.dart';
 
 class VoiceListCubit extends Cubit<VoiceListState> {
   VoiceListCubit({required this.repository}) : super(InitialState()) {
-    getTrendingMovies();
+    getVoices();
   }
 
   final VoiceListService repository;
 
-  void getTrendingMovies() async {
+  void getVoices() async {
     try {
       emit(LoadingState());
       final text = await repository.getUserVoices();
