@@ -106,26 +106,25 @@ class ProfileView extends ProfileViewModel {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               (state is LoadedState)?
-                              (state.profileModel.avatar ?? '').isEmpty
+                              (state.profileModel.avatar ?? '').isNotEmpty
                                   ? Container(
-                                      width: double.maxFinite,
-                                      child: Container(
-                                        height: 100,
-                                        width: 100,
-                                        alignment: Alignment.center,
-                                        decoration: BoxDecoration(
-                                            border: Border.all(
-                                              color: Colors.white70,
-                                              width: 1,
-                                            ),
-                                            shape: BoxShape.circle),
-                                        child: SvgPicture.asset(
-                                          'assets/images/Iconly-Bold-Add User.svg',
-                                          width: 30,
-                                          height: 30,
+                                    height: 100,
+                                    width: 100,
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                        border: Border.all(
+                                          color: Colors.white70,
+                                          width: 1,
                                         ),
+                                        shape: BoxShape.circle),
+                                    child: Center(
+                                      child: SvgPicture.asset(
+                                        'assets/images/Iconly-Bold-Add User.svg',
+                                        width: 30,
+                                        height: 30,
                                       ),
-                                    )
+                                    ),
+                                  )
                                   : CircleAvatar(
                                       radius: 50.0,
                                       child: ClipOval(
@@ -134,25 +133,25 @@ class ProfileView extends ProfileViewModel {
                                         height:100,
                                         width: 100,
                                       )),
-                                    ):Container(
-                                width: double.maxFinite,
-                                child: Container(
-                                  height: 100,
-                                  width: 100,
-                                  alignment: Alignment.center,
-                                  decoration: BoxDecoration(
-                                      border: Border.all(
-                                        color: Colors.white70,
-                                        width: 1,
+                                    )
+                                  :Container(
+                                    height: 100,
+                                    width: 100,
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                        border: Border.all(
+                                          color: Colors.white70,
+                                          width: 1,
+                                        ),
+                                        shape: BoxShape.circle),
+                                    child: Center(
+                                      child: SvgPicture.asset(
+                                        'assets/images/Iconly-Bold-Add User.svg',
+                                        width: 30,
+                                        height: 30,
                                       ),
-                                      shape: BoxShape.circle),
-                                  child: SvgPicture.asset(
-                                    'assets/images/Iconly-Bold-Add User.svg',
-                                    width: 30,
-                                    height: 30,
+                                    ),
                                   ),
-                                ),
-                              ),
                             ],
                           ),
                           SizedBox(

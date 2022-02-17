@@ -68,16 +68,7 @@ class _AudioPlayerUrlState extends State<AudioPlayerUrl> {
           inactiveTrackColor: Colors.grey,
         ),
         child: Slider(
-            activeColor: (widget.status ?? '').toLowerCase().contains('pending')
-                ? AppColors.blueStatus
-                : (widget.status ?? '').toLowerCase().contains('failed')
-                    ? AppColors.redStatus
-                    : AppColors.greenStatus,
-            thumbColor: (widget.status ?? '').toLowerCase().contains('pending')
-                ? AppColors.blueStatus
-                : (widget.status ?? '').toLowerCase().contains('failed')
-                    ? AppColors.redStatus
-                    : AppColors.greenStatus,
+            activeColor:AppColors.redStatus,
             value: timeProgress.toDouble(),
             max: audioDuration.toDouble(),
             onChanged: (value) {
@@ -151,214 +142,236 @@ class _AudioPlayerUrlState extends State<AudioPlayerUrl> {
   Widget build(BuildContext context) {
     return BlocBuilder<openCloseCubit, openCloseState>(
       builder: (context, state) {
-        return GestureDetector(
-          onTap: () {
-            if (state is LoadedState)
-              BlocProvider.of<openCloseCubit>(context).open_close(widget.index!,state.index);
-          },
-          child: Container(
-              margin: EdgeInsets.all(12),
-              alignment: Alignment.center,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Container(
-                            width: 40,
-                            height: 40,
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: audioPlayerState == PlayerState.PLAYING
-                                  ? Colors.transparent
-                                  : AppColors.primaryDarkBlue,
-                              border: Border.all(
-                                color: audioPlayerState == PlayerState.PLAYING
-                                    ? Colors.white
-                                    : Colors.transparent,
-                              ),
-                            ),
-                            child: Center(
-                              child: IconButton(
-                                  iconSize: 30,
-                                  onPressed: () {
-                                    audioPlayerState == PlayerState.PLAYING
-                                        ? pauseMusic()
-                                        : playMusic();
-                                  },
-                                  icon: Center(
-                                    child: Icon(
-                                      audioPlayerState == PlayerState.PLAYING
-                                          ? Icons.pause_rounded
-                                          : Icons.play_arrow_rounded,
-                                      color: Colors.white,
-                                      size: 20,
-                                    ),
-                                  )),
-                            ),
-                          ),
-                          SizedBox(
-                            width: 12,
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                width: 100,
-                                child: Text(
-                                  widget.title ?? '',
-                                  textAlign: TextAlign.left,
-                                  maxLines: 1,
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                height: 6,
-                              ),
-                              Container(
-                                width: 120,
-                                child: Text(
-                                  (widget.date) ?? '',
-                                  textAlign: TextAlign.left,
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w300,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      Spacer(),
-                      Container(
-                        padding: EdgeInsets.all(5),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(8)),
-                          border: Border.all(
-                            width: 1,
-                            color: (widget.status ?? '')
-                                    .toLowerCase()
-                                    .contains('pending')
-                                ? AppColors.blueStatus
-                                : (widget.status ?? '')
-                                        .toLowerCase()
-                                        .contains('failed')
-                                    ? AppColors.redStatus
-                                    : AppColors.greenStatus,
-                          ),
-                          color: (widget.status ?? '')
-                                  .toLowerCase()
-                                  .contains('pending')
-                              ? AppColors.blueStatusBg
-                              : (widget.status ?? '')
-                                      .toLowerCase()
-                                      .contains('failed')
-                                  ? AppColors.redStatusBg
-                                  : AppColors.greenStatusBg,
-                        ),
-                        child: Row(
+        return Column(
+          children: [
+            GestureDetector(
+              onTap: () {
+                if (state is LoadedState)
+                  BlocProvider.of<openCloseCubit>(context)
+                      .open_close(widget.index!, state.index);
+              },
+              child: Container(
+                color:(widget.index! % 2==0)? Colors.white.withOpacity(0.01):Colors.transparent,
+                child: Container(
+                    margin: EdgeInsets.all(12),
+                    alignment: Alignment.center,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            SvgPicture.asset(
-                              (widget.status ?? '')
-                                      .toLowerCase()
-                                      .contains('pending')
-                                  ? 'assets/images/load.svg'
-                                  : (widget.status ?? '')
-                                          .toLowerCase()
-                                          .contains('failed')
-                                      ? 'assets/images/Close Square.svg'
-                                      : 'assets/images/Tick Square.svg',
-                            ),
-                            SizedBox(
-                              width: 6,
-                            ),
-                            Text(
-                              widget.status ?? '',
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
-                                color: (widget.status ?? '')
-                                        .toLowerCase()
-                                        .contains('pending')
-                                    ? AppColors.blueStatus
-                                    : (widget.status ?? '')
-                                            .toLowerCase()
-                                            .contains('failed')
-                                        ? AppColors.redStatus
-                                        : AppColors.greenStatus,
-                                fontSize: 13,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  (state is LoadedState)
-                      ? (state.index == widget.index)
-                          ? Row(
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
+                                Container(
+                                  width: 40,
+                                  height: 40,
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: audioPlayerState == PlayerState.PLAYING
+                                        ? Colors.black38
+                                        : AppColors.primaryDarkBlue,
+                                    border: Border.all(
+                                      color:
+                                          audioPlayerState == PlayerState.PLAYING
+                                              ? Colors.white.withOpacity(0.6)
+                                              : Colors.transparent,
+                                    ),
+                                  ),
+                                  child: Center(
+                                    child: IconButton(
+                                        iconSize: 30,
+                                        onPressed: () {
+                                          audioPlayerState == PlayerState.PLAYING
+                                              ? pauseMusic()
+                                              : playMusic();
+                                        },
+                                        icon: Center(
+                                          child: Icon(
+                                            audioPlayerState ==
+                                                    PlayerState.PLAYING
+                                                ? Icons.pause_rounded
+                                                : Icons.play_arrow_rounded,
+                                            color: Colors.white.withOpacity(0.6),
+                                            size: 20,
+                                          ),
+                                        )),
+                                  ),
+                                ),
                                 SizedBox(
-                                  width: 52,
+                                  width: 12,
                                 ),
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    SizedBox(
-                                      height: 20,
-                                    ),
                                     Container(
-                                      width: MediaQuery.of(context).size.width -
-                                          90,
-                                      alignment: Alignment.centerLeft,
+                                      width: 100,
                                       child: Text(
-                                        widget.text ?? '',
+                                        widget.title ?? '',
                                         textAlign: TextAlign.left,
+                                        maxLines: 1,
                                         style: TextStyle(
                                           color: Colors.white,
                                           fontSize: 13,
-                                          fontWeight: FontWeight.w400,
+                                          fontWeight: FontWeight.w500,
                                         ),
                                       ),
                                     ),
                                     SizedBox(
-                                      height: 10,
+                                      height: 6,
                                     ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Container(width: 240, child: slider()),
-                                        SizedBox(width: 4),
-                                        Text(
-                                          '- '+getTimeString(audioDuration-timeProgress),
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                        )
-                                      ],
+                                    Container(
+                                      width: 120,
+                                      child: Text(
+                                        (widget.date) ?? '',
+                                        textAlign: TextAlign.left,
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w300,
+                                        ),
+                                      ),
                                     ),
                                   ],
                                 ),
                               ],
-                            )
-                          : Container()
-                      : Container(),
-                ],
-              )),
+                            ),
+                            Spacer(),
+                            Container(
+                              padding: EdgeInsets.all(5),
+                              decoration: BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(8)),
+                                border: Border.all(
+                                  width: 1,
+                                  color: (widget.status ?? '')
+                                          .toLowerCase()
+                                          .contains('pending')
+                                      ? AppColors.blueStatus
+                                      : (widget.status ?? '')
+                                              .toLowerCase()
+                                              .contains('failed')
+                                          ? AppColors.redStatus
+                                          : AppColors.greenStatus,
+                                ),
+                                color: (widget.status ?? '')
+                                        .toLowerCase()
+                                        .contains('pending')
+                                    ? AppColors.blueStatusBg
+                                    : (widget.status ?? '')
+                                            .toLowerCase()
+                                            .contains('failed')
+                                        ? AppColors.redStatusBg
+                                        : AppColors.greenStatusBg,
+                              ),
+                              child: Row(
+                                children: [
+                                  SvgPicture.asset(
+                                    (widget.status ?? '')
+                                            .toLowerCase()
+                                            .contains('pending')
+                                        ? 'assets/images/load.svg'
+                                        : (widget.status ?? '')
+                                                .toLowerCase()
+                                                .contains('failed')
+                                            ? 'assets/images/Close Square.svg'
+                                            : 'assets/images/Tick Square.svg',
+                                  ),
+                                  SizedBox(
+                                    width: 6,
+                                  ),
+                                  Text(
+                                    widget.status ?? '',
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(
+                                      color: (widget.status ?? '')
+                                              .toLowerCase()
+                                              .contains('pending')
+                                          ? AppColors.blueStatus
+                                          : (widget.status ?? '')
+                                                  .toLowerCase()
+                                                  .contains('failed')
+                                              ? AppColors.redStatus
+                                              : AppColors.greenStatus,
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        (state is LoadedState)
+                            ? (state.index == widget.index)
+                                ? Row(
+                                    children: [
+                                      SizedBox(
+                                        width: 52,
+                                      ),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          SizedBox(
+                                            height: 20,
+                                          ),
+                                          Container(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width -
+                                                90,
+                                            alignment: Alignment.centerLeft,
+                                            child: Text(
+                                              widget.text ?? '',
+                                              textAlign: TextAlign.left,
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 13,
+                                                fontWeight: FontWeight.w400,
+                                              ),
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Container(
+                                                  width: 240, child: slider()),
+                                              SizedBox(width: 4),
+                                              Text(
+                                                '- ' +
+                                                    getTimeString(audioDuration -
+                                                        timeProgress),
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  )
+                                : Container()
+                            : Container(),
+                      ],
+                    )),
+              ),
+            ),
+            Container(
+              width: MediaQuery.of(context).size.width ,
+              height: 0.1,
+              color: Colors.white.withOpacity(0.3),
+            )
+          ],
         );
       },
     );
