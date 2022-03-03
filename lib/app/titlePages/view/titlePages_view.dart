@@ -6,10 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:aimedic/core/widgets/home_page_widgets.dart/TaskWidget.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:percent_indicator/percent_indicator.dart';
-
+import 'package:flutter/foundation.dart' show kIsWeb;
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/loading.dart';
 import '../../home/globalCubit/global_cubit.dart';
+import '../../home/globalCubit/navigator_cubit.dart';
 
 class TitlePagesView extends TitlePagesViewModel {
   @override
@@ -116,15 +117,23 @@ class TitlePagesView extends TitlePagesViewModel {
                       onTap: () {
                         if (texts[index].is_recorded!) {
                         } else {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (BuildContext context) => RecorderPage(
-                                args: ScreenArguments(texts[index].text ?? '',
-                                    texts[index].id ?? '', index),
+
+                          if(kIsWeb)
+                            {
+                              BlocProvider.of<NavigationCubit>(context).setPage(PAGES.VOICE,arguments: ScreenArguments(texts[index].text ?? '',
+                                  texts[index].id ?? '', index));
+                            }
+                          else{
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (BuildContext context) => RecorderPage(
+                                  args: ScreenArguments(texts[index].text ?? '',
+                                      texts[index].id ?? '', index),
+                                ),
                               ),
-                            ),
-                          );
+                            );
+                          }
                         }
                       },
                       child: Task(

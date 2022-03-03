@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:aimedic/app/otp/cubit/otp_cubit.dart';
 import 'package:aimedic/app/otp/service/otp_services.dart';
 import 'package:dio/dio.dart';

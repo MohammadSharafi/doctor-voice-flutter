@@ -2,14 +2,14 @@ import 'package:aimedic/app/record/record.dart';
 import 'package:aimedic/app/recordList/recordlist.dart';
 import 'package:aimedic/app/recordPage/viewModel/recordPage_view_model.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:aimedic/core/widgets/login_background.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toggle_switch/toggle_switch.dart';
-
 import '../../../core/constants/app_colors.dart';
 import '../../home/globalCubit/global_cubit.dart';
+import '../../record/view/record_view_web.dart';
 import '../../titlePages/model/ScreenArguments.dart';
 
 class RecorderPageView extends RecorderPageViewModel {
@@ -77,8 +77,10 @@ class RecorderPageView extends RecorderPageViewModel {
                 physics: NeverScrollableScrollPhysics(),
                 controller: controller,
                 children: <Widget>[
-                  Record(args: args,),
-                  RecordList(),
+                  kIsWeb
+                      ?RecordViewWeb(args: args,)
+                      :Record(args: args,),
+                       RecordList(),
                 ],
               ),
             ),

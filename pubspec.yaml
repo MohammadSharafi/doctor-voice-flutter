@@ -53,7 +53,8 @@ dependencies:
   custom_navigator: ^0.3.0
   hexcolor: ^2.0.6
   image_picker: ^0.8.4+8
-
+  responsive_framework: ^0.1.7
+  microphone: ^0.1.0
 
 dev_dependencies:
   flutter_test:

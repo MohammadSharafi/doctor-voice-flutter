@@ -11,7 +11,6 @@ import 'package:aimedic/core/cache_manager.dart';
 abstract class IRecordService {
   IRecordService(this.dio);
 
- // Future<UserDevicesList?> getUserDevicesList(UserDevicesListRequest model);
   final Dio dio;
 }
 
